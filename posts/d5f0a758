@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=0.5">
+
+        <link href="/css/main.css" rel="stylesheet" type="text/css">
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Atom feed">
+        <link rel="shortcut icon" href="/image/Yc.jpg">
+        <link href="/css/prism.css" rel="stylesheet" />
+        <title>浅剖智能指针之 auto_ptr</title>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-78070816-3"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            
+            gtag('config', 'UA-78070816-3');
+        </script>
+    </head>
+    <body>
+        <!-- suppport block of mathjax -->
+        <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+        </script>
+        <!-- support mathjax inline -->
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({
+                tex2jax: {inlineMath: [['$','$']]},
+                messageStyle: "none"
+            });
+        </script>
+        <script>
+            if (/mobile/i.test(navigator.userAgent) || /android/i.test(navigator.userAgent)){
+                document.body.classList.add('mobile');
+            }
+        </script>
+        <script src="/js/prism.js"></script>
+        <div class="inner">
+            <h2>浅剖智能指针之 auto_ptr</h2>
+
+<p>刚刚在复习的时候遇到了智能指针，就一时兴起去找出了智能指针的源码看了看，现将我对 auto_ptr 的理解记录如下：</p>
+
+<p>Linux 下，auto_ptr 源码在 <code>/usr/include/c++/4.4.7/backword/auto_ptr.h</code>:</p>
+
+<p>auto<em>ptr 本身是一个模板类，封装了一个原生指针。它最大的特点是在拷贝构造、赋值、传参等过程中对原生指针控制权的转移，即会将自己所管理的指针 release 掉，并赋给新的 auto</em>ptr 对象。</p>
+
+<p>代码如下：</p>
+
+<pre><code class="language-C">#ifndef _BACKWARD_AUTO_PTR_H
+#define _BACKWARD_AUTO_PTR_H 1
+
+#include &lt;bits/c++config.h&gt;
+#include &lt;debug/debug.h&gt;
+
+_GLIBCXX_BEGIN_NAMESPACE(std)
+
+  template&lt;typename _Tp1&gt;
+    struct auto_ptr_ref
+    {
+      _Tp1* _M_ptr;
+
+      explicit
+      auto_ptr_ref(_Tp1* __p): _M_ptr(__p) { }
+    } _GLIBCXX_DEPRECATED_ATTR;
+
+  template&lt;typename _Tp&gt;
+    class auto_ptr
+    {
+    private:
+      _Tp* _M_ptr;
+
+    public:
+      typedef _Tp element_type;
+
+      explicit
+      auto_ptr(element_type* __p = 0) throw() : _M_ptr(__p) { }
+
+      auto_ptr(auto_ptr&amp;amp; __a) throw() : _M_ptr(__a.release()) { }
+
+      template&lt;typename _Tp1&gt;
+        auto_ptr(auto_ptr&lt;_Tp1&gt;&amp;amp; __a) throw() : _M_ptr(__a.release()) { }
+
+      auto_ptr&amp;amp;
+      operator=(auto_ptr&amp;amp; __a) throw()
+      {
+    reset(__a.release());
+    return *this;
+      }
+
+      template&lt;typename _Tp1&gt;
+        auto_ptr&amp;amp;
+        operator=(auto_ptr&lt;_Tp1&gt;&amp;amp; __a) throw()
+        {
+      reset(__a.release());
+      return *this;
+    }
+
+      ~auto_ptr() { delete _M_ptr; }
+
+      element_type&amp;amp;
+      operator*() const throw() 
+      {
+    _GLIBCXX_DEBUG_ASSERT(_M_ptr != 0);
+    return *_M_ptr; 
+      }
+
+      element_type*
+      operator-&gt;() const throw() 
+      {
+    _GLIBCXX_DEBUG_ASSERT(_M_ptr != 0);
+    return _M_ptr; 
+      }
+
+      element_type*
+      get() const throw() { return _M_ptr; }
+
+      element_type*
+      release() throw()
+      {
+    element_type* __tmp = _M_ptr;
+    _M_ptr = 0;
+    return __tmp;
+      }
+
+      void
+      reset(element_type* __p = 0) throw()
+      {
+    if (__p != _M_ptr)
+      {
+        delete _M_ptr;
+        _M_ptr = __p;
+      }
+      }
+
+      auto_ptr(auto_ptr_ref&lt;element_type&gt; __ref) throw()
+      : _M_ptr(__ref._M_ptr) { }
+
+      auto_ptr&amp;amp;
+      operator=(auto_ptr_ref&lt;element_type&gt; __ref) throw()
+      {
+    if (__ref._M_ptr != this-&gt;get())
+      {
+        delete _M_ptr;
+        _M_ptr = __ref._M_ptr;
+      }
+    return *this;
+      }
+
+      template&lt;typename _Tp1&gt;
+        operator auto_ptr_ref&lt;_Tp1&gt;() throw()
+        { return auto_ptr_ref&lt;_Tp1&gt;(this-&gt;release()); }
+
+      template&lt;typename _Tp1&gt;
+        operator auto_ptr&lt;_Tp1&gt;() throw()
+        { return auto_ptr&lt;_Tp1&gt;(this-&gt;release()); }
+    } _GLIBCXX_DEPRECATED_ATTR;
+
+  template&lt;&gt;
+    class auto_ptr&lt;void&gt;
+    {
+    public:
+      typedef void element_type;
+    } _GLIBCXX_DEPRECATED_ATTR;
+
+_GLIBCXX_END_NAMESPACE
+
+#endif /* _BACKWARD_AUTO_PTR_H */
+</code></pre>
+
+        </div>
+    </body>
+</html>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/haoel/anti-baidu@0.6.2/js/anti-baidu-latest.min.js" charset="UTF-8"></script>

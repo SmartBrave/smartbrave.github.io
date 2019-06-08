@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=0.5">
+
+        <link href="/css/main.css" rel="stylesheet" type="text/css">
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Atom feed">
+        <link rel="shortcut icon" href="/image/Yc.jpg">
+        <link href="/css/prism.css" rel="stylesheet" />
+        <title>剑指offer，每日来一发</title>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-78070816-3"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            
+            gtag('config', 'UA-78070816-3');
+        </script>
+    </head>
+    <body>
+        <!-- suppport block of mathjax -->
+        <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+        </script>
+        <!-- support mathjax inline -->
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({
+                tex2jax: {inlineMath: [['$','$']]},
+                messageStyle: "none"
+            });
+        </script>
+        <script>
+            if (/mobile/i.test(navigator.userAgent) || /android/i.test(navigator.userAgent)){
+                document.body.classList.add('mobile');
+            }
+        </script>
+        <script src="/js/prism.js"></script>
+        <div class="inner">
+            <h2>剑指offer，每日来一发</h2>
+
+<p>博主今年大三，在一个不知名的普通本科院校里学习计算机专业。从 2 月份开始就着手准备暑期实习的事情了。参加过好多公司的在线笔试，比如腾讯，百度，阿里，网易，360，完美世界等等。但只通过了两个。奈何因为一些个人原因，这两家公司的面试都在一面阶段就被刷了。感觉很不甘心！后来找老师指点了一番，方恍然大悟--算法基础还是很重要的！所以前段时间沉下心来，开始做《剑指offer》上面的题目。正好最近搭建了一个自己的博客系统，所以就将代码发布在这里吧。</p>
+
+<p>现在刷了差不多有一半，我会争取以每天 1~2 篇的速度将代码发布到这里。</p>
+
+<p>毕竟是自己写的，测试用例也可能不太严谨。如果你发现任何的问题，请向我指正，万分感谢！</p>
+
+<p>写此博客，是为据！</p>
+
+        </div>
+    </body>
+</html>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/haoel/anti-baidu@0.6.2/js/anti-baidu-latest.min.js" charset="UTF-8"></script>

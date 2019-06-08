@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=0.5">
+
+        <link href="/css/main.css" rel="stylesheet" type="text/css">
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Atom feed">
+        <link rel="shortcut icon" href="/image/Yc.jpg">
+        <link href="/css/prism.css" rel="stylesheet" />
+        <title>面试题29：数组中出现次数超过一半的数字</title>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-78070816-3"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            
+            gtag('config', 'UA-78070816-3');
+        </script>
+    </head>
+    <body>
+        <!-- suppport block of mathjax -->
+        <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+        </script>
+        <!-- support mathjax inline -->
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({
+                tex2jax: {inlineMath: [['$','$']]},
+                messageStyle: "none"
+            });
+        </script>
+        <script>
+            if (/mobile/i.test(navigator.userAgent) || /android/i.test(navigator.userAgent)){
+                document.body.classList.add('mobile');
+            }
+        </script>
+        <script src="/js/prism.js"></script>
+        <div class="inner">
+            <h2>面试题29：数组中出现次数超过一半的数字</h2>
+
+<p><strong>题目：数组中有一个数字出现的次数超过了数组长度的一半，请找出这个数字。例如输入一个长度为9的数组{1,2,3,2,2,2,5,4,2}。由于数字2出现了5此，超过了数组的一半，因此输出2.</strong></p>
+
+<hr />
+
+<h3>分析</h3>
+
+<ul>
+<li><p>最直观的解决办法就是将数组排序，然后取其中位数即可。但排序最快也需要O(nlgn)的时间复杂度，效率不是特别高。代码略。</p></li>
+
+<li><p>还可以基于快速排序中的partition函数来求解。partition函数每次能确定一个值在数组中的确切位置。因此在找到位于数组中间位置的数字即可停止。
+代码如下：</p></li>
+</ul>
+
+<pre><code>template&lt;typename t=&quot;&quot;&gt;
+int Partition(vector&lt;t&gt;&amp;amp; v,int left,int right)
+{
+    int i=left,j=right-1;
+    T tmp=v[left];
+    while(i&lt;j)
+    {
+        while(i&lt;j &amp;amp;&amp;amp; v[i]&lt;=tmp)
+            i++;
+        swap(v[i],v[j]);
+        while(i&lt;j vj=&quot;&quot;&gt;=tmp)
+            j--;
+        swap(v[i],v[j]);
+    }
+    return i;
+}
+
+template&lt;typename t=&quot;&quot;&gt;
+T _MoreThanHalfNum(vector&lt;t&gt;&amp;amp; v,int left,int right)throw (NoNumIsMoreThanHalf)
+{
+    int mid=Partition(v,left,right);
+    if(mid==v.size()/2)
+    {
+        if(CheckNumIsMoreThanHalf(v,mid))
+            return v[mid];
+        else
+            throw NoNumIsMoreThanHalf();
+    }
+    else if(mid&lt;v.size()/2)
+        return _MoreThanHalfNum(v,mid+1,right);
+    else
+        return _MoreThanHalfNum(v,left,mid);
+}
+
+template&lt;typename t=&quot;&quot;&gt;
+T MoreThanHalfNum(vector&lt;t&gt;&amp;amp; v)
+{
+    _MoreThanHalfNum(v,0,v.size());
+}
+&lt;/t&gt;&lt;/typename&gt;&lt;/t&gt;&lt;/typename&gt;&lt;/j&gt;&lt;/t&gt;&lt;/typename&gt;```
+
+*   最优的方法是设置两个数字num和time，num表示数组中的某一个数字，time代表num出现的次数。我们可以从前往后遍历数组，如果当前值等于num，就给time++；如果不等于，就time–；当time减少到0时，用下一个数字替换num的值。这样下来，只需要遍历一遍数组，就可以找出出现次数超过一半的数字。
+代码如下：
+
+</code></pre>
+
+<p>template<typename t="">
+T MoreThanHalfNum(const vector<t>&amp; v)
+{
+    if(v.size()==0)
+        throw NoNumIsMoreThanHalf();
+    T num=v[0];
+    int time=1;
+    int i;
+    for(i=1;i<v.sizei iftime="">0)
+        {
+            if(v[i]==num)
+            {
+                time++;
+            }
+            else
+            {
+                time--;
+            }
+        }
+        else
+        {
+            num=v[i];
+            time=1;
+        }
+    }
+    if(CheckNumIsMoreThanHalf(v,num))
+        return num;
+    else
+        throw NoNumIsMoreThanHalf();
+}
+</v.sizei></t></typename>```</p>
+
+<p><strong>以上</strong></p>
+
+<p>如果你有任何想法或是可以改进的地方，欢迎和我交流！</p>
+
+<p>完整代码及测试用例在github上：<a href="https://github.com/SmartBrave/Sword-to-Offer/blob/master/29_MoreThanHalfNumber/main.cpp">点我前往</a></p>
+
+<div>[来自为知笔记(Wiz)](http://www.wiz.cn/i/96171253 "来自为知笔记(Wiz)")</div>
+
+        </div>
+    </body>
+</html>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/haoel/anti-baidu@0.6.2/js/anti-baidu-latest.min.js" charset="UTF-8"></script>

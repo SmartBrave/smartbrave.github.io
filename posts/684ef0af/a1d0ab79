@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=0.5">
+
+        <link href="/css/main.css" rel="stylesheet" type="text/css">
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Atom feed">
+        <link rel="shortcut icon" href="/image/Yc.jpg">
+        <link href="/css/prism.css" rel="stylesheet" />
+        <title>面试题13：在O(1)时间 内删除链表节点</title>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-78070816-3"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            
+            gtag('config', 'UA-78070816-3');
+        </script>
+    </head>
+    <body>
+        <!-- suppport block of mathjax -->
+        <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+        </script>
+        <!-- support mathjax inline -->
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({
+                tex2jax: {inlineMath: [['$','$']]},
+                messageStyle: "none"
+            });
+        </script>
+        <script>
+            if (/mobile/i.test(navigator.userAgent) || /android/i.test(navigator.userAgent)){
+                document.body.classList.add('mobile');
+            }
+        </script>
+        <script src="/js/prism.js"></script>
+        <div class="inner">
+            <h2>面试题13：在O(1)时间 内删除链表节点</h2>
+
+<h3>题目：给定单向链表的头指针和一个节点指针，定义一个函数在O(1)时间删除该节点。链表节点与函数的定义如下：</h3>
+
+<pre><code>
+struct ListNode
+{
+	int value;
+	ListNode* next;
+}
+
+void DeleteNode(ListNode* head,ListNode* pToBeDeleted);
+</code></pre>
+
+<hr />
+
+<h3>分析</h3>
+
+<p>在单向链表中删除一个节点，通常的做法是从链表头开始遍历，如果某个节点的next等于要删除的节点，就将该next改为待删除节点的下一个节点，然后删除该链表节点即可。</p>
+
+<p>代码如下：</p>
+
+<pre><code>
+void DeleteNode(ListNode* head,ListNode* pToBeDeleted)
+{
+	if(head==NULL || pToBeDeleted==NULL)
+		return;
+	ListNode* cur=head;
+	if(cur==pToBeDeleted)
+	{
+		head=cur-&gt;next;
+		delete pToBeDeleted;
+		return head;
+	}
+	while(cur!=NULL)
+	{
+		if(cur-&gt;next==pToBeDeleted)
+		{
+			cur-&gt;next==pToBeDeleted-&gt;next;
+			delete pToBeDeleted;
+			return;
+		}
+		cur=cur-&gt;next;
+	}
+}
+</code></pre>
+
+<p>由于这样的思路需要顺序查找，时间复杂度自然就是O(n)了。</p>
+
+<p>因为我们要删除某个节点，如果不是第一个节点的话，就需要更改它前面节点的next值。而单链表是无法逆行的，所以我们可以按如下步骤做：</p>
+
+<ol>
+<li>1. 如果待删除节点不是最后一个节点，就用他的next节点的value覆盖它的value，然后删掉它的next节点。</li>
+<li>2. 如果是最后一个节点，还是老老实实的顺序遍历吧。</li>
+</ol>
+
+<p><strong>But，这种方法会带来一个问题，就是可能会使原来指向待删除节点的next节点的指针在删除操作之后失效！！</strong>任何事物都是有两面性的，将删除操作时间复杂度降到了O(1)，就要接受这种类似于迭代器失效问题的后果。</p>
+
+<p>代码如下：</p>
+
+<pre><code>void DeleteNode(ListNode** pListHead,ListNode* pToBeDeleted)
+{
+    if(pListHead==NULL || *pListHead==NULL || pToBeDeleted==NULL)
+        return;
+    if(pToBeDeleted-&gt;next!=NULL)
+    {
+        ListNode* tmp=pToBeDeleted-&gt;next;
+        pToBeDeleted-&gt;value=tmp-&gt;value;
+        pToBeDeleted-&gt;next=tmp-&gt;next;
+        delete tmp;
+    }
+    else
+    {
+        ListNode* cur=*pListHead;
+        if(cur==pToBeDeleted)
+        {
+            *pListHead=cur-&gt;next;
+            delete cur;
+            return;
+        }
+        while(cur-&gt;next!=NULL)
+        {
+            if(cur-&gt;next==pToBeDeleted)
+            {
+                ListNode* tmp=cur-&gt;next;
+                cur-&gt;next=tmp-&gt;next;
+                delete tmp;
+                return;
+            }
+            cur=cur-&gt;next;
+        }
+    }
+}
+</code></pre>
+
+<p><strong>以上</strong></p>
+
+<p>如果你有任何想法或是可以改进的地方，欢迎和我交流！</p>
+
+<p>完整代码及测试用例在github上：<a href="https://github.com/SmartBrave/Sword-to-Offer/blob/master/13_DeleteNodeInList/main.cpp">点我前往</a></p>
+
+        </div>
+    </body>
+</html>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/haoel/anti-baidu@0.6.2/js/anti-baidu-latest.min.js" charset="UTF-8"></script>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=0.5">
+
+        <link href="/css/main.css" rel="stylesheet" type="text/css">
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Atom feed">
+        <link rel="shortcut icon" href="/image/Yc.jpg">
+        <link href="/css/prism.css" rel="stylesheet" />
+        <title>自己实现简易的内存泄露检测工具VLD</title>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-78070816-3"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            
+            gtag('config', 'UA-78070816-3');
+        </script>
+    </head>
+    <body>
+        <!-- suppport block of mathjax -->
+        <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+        </script>
+        <!-- support mathjax inline -->
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({
+                tex2jax: {inlineMath: [['$','$']]},
+                messageStyle: "none"
+            });
+        </script>
+        <script>
+            if (/mobile/i.test(navigator.userAgent) || /android/i.test(navigator.userAgent)){
+                document.body.classList.add('mobile');
+            }
+        </script>
+        <script src="/js/prism.js"></script>
+        <div class="inner">
+            <h2>自己实现简易的内存泄露检测工具VLD</h2>
+
+<p>有一个很著名的内存泄露检测工具 Visual leak detected 想必大家都不陌生，但今天我们可以自己写一个简易版的。哈哈，自己动手，丰衣足食有木有！</p>
+
+<p>它的原理就是我们重载了操作符 <code>new</code> 和 <code>delete</code>，当用 <code>new</code> 开辟空间的时候，就将这块空间串到我们定义的结构体 <code>MEMNode</code> 形成的链表中，（在<code>main</code>程序结束时，用 <code>check_vld()</code> 函数检测有没有内存泄露）但我觉得，如果我们动态开辟了一个对象，在它的析构函数里用 <code>delete</code> 释放的话，这种方法就不太可行。因为析构函数只有到 <code>return</code> 时才会被调用（在 <code>check_vld()</code> 函数之前）。检测结果就不准确。由此我想到，可以将这个结构体改为  C++  中的 class，并将其指针也封装为一个类 <code>PMEMNode</code>，然后定义一个 <code>PMEMNode</code> 的全局静态成员（它会在主函数之前被构造，主函数结束后析构）。并将 <code>check_vld()</code> 的代码放在他的析构函数中。</p>
+
+<p>废话不多说，代码在下面：</p>
+
+<pre><code class="language-C">//vld.h:
+#pragma once
+
+#include &lt;iostream&gt;
+using namespace std;
+
+class MemNode {
+    friend void* operator new(size_t sz, char *filename, int line);
+public:
+    MemNode(int s = 0,char *pf = NULL, int l = 0,class MemNode *pl=NULL)
+        :size(s),file(pf),line(l),link(pl)
+    {}
+    ~MemNode()
+    {}
+    void set(int sz, char *pf, int l, class MemNode *pl)
+    {
+        size = sz;
+        file = pf;
+        line = l;
+        link = pl;
+    }
+    void setlink(MemNode *pl)
+    {
+        link = pl;
+    }
+    int getsize()
+    {
+        return size;
+    }
+    char *getfile()
+    {
+        return file;
+    }
+    int getline()
+    {
+        return line;
+    }
+    MemNode *getlink()
+    {
+        return link;
+    }
+    private:
+        int size;
+        char *file;
+        int line;
+        class MemNode *link;
+};
+
+void check_vld();
+
+class pMemNode {
+public:
+    pMemNode(MemNode *ptr=NULL):p(ptr){}
+    ~pMemNode()
+    {
+        check_vld();
+    }
+    MemNode *getptr()
+    {
+        return p;
+    }
+    void setptr(MemNode *ptr)
+    {
+        p = ptr;
+    }
+private:
+    MemNode *p;
+};
+
+static pMemNode _AfxMem;
+
+void* operator new(size_t sz,char *filename,int line)
+{
+    void *result=NULL;
+    int total_size = sz + sizeof(MemNode);
+    MemNode *p = new MemNode[total_size];
+    p-&gt;set(sz, filename, line, NULL);
+    if (_AfxMem.getptr() == NULL)
+    {
+        _AfxMem.setptr(p);
+    }
+    else
+    {
+        p-&gt;setlink(_AfxMem.getptr());
+        _AfxMem.setptr(p);
+    }
+    result = _AfxMem.getptr()+1;
+    return result;
+}
+
+void operator delete(void *ptr)
+{
+    if(_AfxMem.getptr()==NULL)
+    {
+        return;
+    }
+    if(ptr==NULL)
+    {
+        return;
+    }
+    MemNode *p;
+    if (_AfxMem.getptr()+1 == ptr)
+    {
+        p = _AfxMem.getptr();
+        _AfxMem.setptr(p-&gt;getlink());
+        delete p;
+    }
+    else
+    {
+        p = _AfxMem.getptr();
+        while (p-&gt;getlink() != NULL &amp;amp;&amp;amp; p-&gt;getlink()+1!=ptr)
+        {
+            p = p-&gt;getlink();
+        }
+        if (p-&gt;getlink() != NULL)
+        {
+            MemNode *q = p-&gt;getlink();
+            p-&gt;setlink(q-&gt;getlink());
+            delete q;
+        }
+    }
+}
+
+void check_vld()
+{
+    if (_AfxMem.getptr() == NULL)
+    {
+        cout &lt;&lt; \&quot;No memory Leaks detected.\&quot; &lt;&lt; endl;
+    }
+    else
+    {
+        MemNode *p = _AfxMem.getptr();
+        cout &lt;&lt; \&quot;WARNING: Visual Leak Detector detected memory leaks!\&quot; &lt;&lt; endl;
+        while (p != NULL)
+        {
+            printf(\&quot;At %p: %d Bytesn\&quot;, p + 1, p-&gt;getsize());
+            printf(\&quot;file: %s, line: %dn\&quot;, p-&gt;getfile(), p-&gt;getline());
+            p = p-&gt;getlink();
+        }
+    }
+}
+</code></pre>
+
+<pre><code class="language-C">//Main.cpp:
+
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include \&quot;vld.h\&quot;
+using namespace std;
+
+class Test
+{
+public:
+    Test(char *str)
+    {
+        int a = strlen(str) + 1;
+        ch = new(__FILE__, __LINE__) char[a];
+        //strcpy(ch, str);
+    }
+    ~Test()
+    {
+        delete[]ch;
+        ch = NULL;
+    }
+private:
+    char *ch;
+    int a;
+    double b;
+    char c;
+};
+
+int main()
+{
+    //VLD vld;
+    int a = 10;
+    Test t(\&quot;hello\&quot;);
+    //int *p = new(__FILE__,__LINE__) int(10);
+    //double *q = new(__FILE__,__LINE__) double(12.34);
+    Test *s = new(__FILE__,__LINE__) Test(\&quot;hello\&quot;);
+
+    //delete p;
+    //delete q;
+    //check_vld();
+    return 0;
+}
+</code></pre>
+
+        </div>
+    </body>
+</html>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/haoel/anti-baidu@0.6.2/js/anti-baidu-latest.min.js" charset="UTF-8"></script>

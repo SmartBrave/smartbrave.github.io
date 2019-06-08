@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=0.5">
+
+        <link href="/css/main.css" rel="stylesheet" type="text/css">
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Atom feed">
+        <link rel="shortcut icon" href="/image/Yc.jpg">
+        <link href="/css/prism.css" rel="stylesheet" />
+        <title>20181201</title>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-78070816-3"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            
+            gtag('config', 'UA-78070816-3');
+        </script>
+    </head>
+    <body>
+        <!-- suppport block of mathjax -->
+        <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+        </script>
+        <!-- support mathjax inline -->
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({
+                tex2jax: {inlineMath: [['$','$']]},
+                messageStyle: "none"
+            });
+        </script>
+        <script>
+            if (/mobile/i.test(navigator.userAgent) || /android/i.test(navigator.userAgent)){
+                document.body.classList.add('mobile');
+            }
+        </script>
+        <script src="/js/prism.js"></script>
+        <div class="inner">
+            <h2>20181201</h2>
+
+<p><strong>Overview:</strong></p>
+
+<ul>
+<li>Algorithm: <a href="https://leetcode-cn.com/problems/container-with-most-water/">盛最多水的容器</a></li>
+<li>Review: 暂无</li>
+<li>Technique: git flow</li>
+<li>Share: 一个 golang 的小问题</li>
+</ul>
+
+<hr />
+
+<h3>Algorithm: 盛最多水的容器</h3>
+
+<h4>题目</h4>
+
+<p>给定 n 个非负整数 $a_1，a_2，...，a_n$，每个数代表坐标中的一个点 (i, $a_i$) 。在坐标内画 n 条垂直线，垂直线 i 的两个端点分别为 (i, $a_i$) 和 (i, 0)。找出其中的两条线，使得它们与 x 轴共同构成的容器可以容纳最多的水。</p>
+
+<p>说明：你不能倾斜容器，且 n 的值至少为 2。</p>
+
+<pre><code>输入：[1,8,6,2,5,4,8,3,7]
+输出：49
+</code></pre>
+
+<h4>思路</h4>
+
+<p>实际上，这道题就是求某两条垂线构成的最小矩形的面积的最大值。因此最简单的方式就是暴力遍历，对所有可能的两条垂线的组合求其面积，然后取最大值即可。但这种算法的复杂度为 $O(n^2)$。</p>
+
+<p>换一个角度思考，设两条垂线分别为 $x=i$ 和 $x=j$ (i&lt;j)，且 $a=j-i$,$b=min(a_i,a_j)$，则面积 $S_{ij}=a*b$。此时只需要将 i、j 中较小的一个加 1 或减 1 即可。</p>
+
+<h4>测试用例及代码实现</h4>
+
+<ul>
+<li>代码请移步 <a href="https://github.com/SmartBrave/leetcode_sb/tree/master/MaxArea">Github</a></li>
+</ul>
+
+<h3>Technique: git flow</h3>
+
+<p>Git 是一个非常优秀的版本控制工具，可以说，只要你是一位程序员，就不能不知道 git。但很多人对 git 的使用都极不规范，就比如在分支管理上。他们通常只维护一个 master 分支，所有的代码都提交到上面。这样，如果你想要同时进行两个新功能的开发，或者多人协作的时候，就会遇到很大的麻烦。由此出现了 git flow 工作流。</p>
+
+<p>git flow 的目的不是为了替代 git 的功能，而是整合 git 相关的命令，形成一个完整的操作流程和规范。即使不用 git flow 相关工具，只要你按照这个步骤来操作就没问题。</p>
+
+<p>首先明确在 git flow 中，定义了 master、feature、develop、release 和 hotfix 五个分支，所有的操作都在这五个分支上完成。其中 master、feature 为长期维护分支，其他为临时分支，用完后需要删除掉。</p>
+
+<ul>
+<li>master：项目主干分支。且代码为稳定版本，不得直接在其上进行开发，只直接与 develop 和 hotfix 分支打交道。</li>
+<li>develop：开发分支。起初从 master 上的某个 commit 分离出来，然后在其上进行开发。完成后需要合并到 master 分支上，可一次将多个 commit 合并到 master。</li>
+<li>feature：新功能分支。当需要实现某个新功能，就需要从 develop 分支上的某个 commit 新建一个 feature 分支，开发完成后再 merge 回 develop。</li>
+<li>release：发布分支。若某个 feature 开发完成需要发布，则应基于 feature 新建一个 release 分支，并发布。完成后需要双向 merge 到 develop 和 master 分支。</li>
+<li>hotfix：热修复分支。若生产环境发现 bug 需要紧急修复，可基于 master 新建 hotfix 分支，修复后双向 merge 到 develop 和 master。</li>
+</ul>
+
+<h3>Share</h3>
+
+<p>这周在工作中遇到一个小问题，大体可以抽象为如下代码：</p>
+
+<pre><code class="language-go">type Handler struct{}
+
+func (h *Handler) Serve(a int) int {
+	return a
+}
+
+type Itype interface {
+	//Serve(int) int
+}
+
+func test(ls ...Itype) {
+	fmt.Println(reflect.TypeOf(ls))
+}
+
+func main() {
+	handlers := []*Handler{
+		&amp;Handler{},
+	}
+
+	test(Handler{}, Handler{})
+	test(&amp;Handler{}, &amp;Handler{})
+	test(handlers)
+	test(handlers...)
+
+}
+</code></pre>
+
+<p>具体问题是：main 函数里面四个 test 调用，哪些能编译通过，哪些不能通过？如果把注释打开呢？为什么？</p>
+
+<p>看到这里可以先停下来想想，然后再继续。</p>
+
+<p>我验证的结果是，前三个可以编译通过，最后一个调用无法通过。如果把注释打开，则只有第二个函数调用能通过。</p>
+
+<p>解释如下：</p>
+
+<p>分两种情况：注释关闭和注释打开</p>
+
+<ul>
+<li>注释关闭：
+
+<ul>
+<li>此时 <code>handlers...</code> 的类型是 <code>[]*Handler</code>，而 <code>test</code> 函数接受的形参类型是 <code>[]IType</code>，所以第四个无法编译通过；</li>
+<li>那第三个的类型也是 <code>[]*Handler</code>，为什么可以通过？原因是将 <code>handlers</code>作为一个整体，传递给 <code>interface{}</code> 了，这当然是可以的；</li>
+<li>对于第 1、2 个，编译器会将其打包成 <code>[]IType</code> 类型，每个元素类型分别是 <code>Handler</code> 和 <code>*Handler</code>，因而也没问题；</li>
+</ul></li>
+<li>注释打开：只有第二个可以编译通过
+
+<ul>
+<li>此时 3 因为<code>[]*Handler</code> 类型没有实现 <code>Serve</code> 方法，故编译不通过；</li>
+<li>go 可以通过对象引用调用由指针定义的方法，原理是编译器给对象取了地址，而不是对象也实现了这个方法。在 1 中，这里是参数传递，而不是函数调用，因此不会自动取地址，因而导致 <code>Handler</code> 类型没有实现 <code>Serve</code> 方法，无法传递；</li>
+</ul></li>
+</ul>
+
+<hr />
+
+<p><em>ARTS is a learning project initiated by <a href="https://coolshell.cn">Hao Chen</a>. A means learning a Algorithm on <a href="https://leetcode.com">LeetCode</a>,R means Reviewing an English article about programer,T means learning a Technique skill,and S means doing a Share with others that influence people. Adhere to every week at least one year!</em></p>
+
+<blockquote>
+<p>This article was posted on my <a href="https://sbrave.cn">blog</a> and <a href="https://github.com/SmartBrave/ARTS">Github</a> using the MIT Open Source License.</p>
+</blockquote>
+
+        </div>
+    </body>
+</html>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/haoel/anti-baidu@0.6.2/js/anti-baidu-latest.min.js" charset="UTF-8"></script>

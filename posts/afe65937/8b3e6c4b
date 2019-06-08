@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=0.5">
+
+        <link href="/css/main.css" rel="stylesheet" type="text/css">
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Atom feed">
+        <link rel="shortcut icon" href="/image/Yc.jpg">
+        <link href="/css/prism.css" rel="stylesheet" />
+        <title>TCP/IP协议概览</title>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-78070816-3"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            
+            gtag('config', 'UA-78070816-3');
+        </script>
+    </head>
+    <body>
+        <!-- suppport block of mathjax -->
+        <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+        </script>
+        <!-- support mathjax inline -->
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({
+                tex2jax: {inlineMath: [['$','$']]},
+                messageStyle: "none"
+            });
+        </script>
+        <script>
+            if (/mobile/i.test(navigator.userAgent) || /android/i.test(navigator.userAgent)){
+                document.body.classList.add('mobile');
+            }
+        </script>
+        <script src="/js/prism.js"></script>
+        <div class="inner">
+            <h2>TCP/IP协议概览</h2>
+
+<p>目前关于网络通信的标准有两套协议，分别是 OSI 参考模型和 TCP/IP 模型。OSI 参考模型只用于理论研究，而 TCP/IP 模型更注重于实际应用。他们的关系如下：</p>
+
+<p><img src="/images/TCP-OSI.png" width="100%" height="100%"></p>
+
+<p>从中可以看出，TCP/IP 模型的应用层对应 OSI 模型的应用层+表示层+会话层，TCP/IP 模型的传输层和网络层分别对应 OSI 模型的传输层和网络层，TCP/IP 模型的网络接口层对应 OSI 模型的数据链路层+物理层。并且 TCP/IP 模型的下三层由内核实现，应用层由应用程序来实现的。</p>
+
+<p>TCP/IP 模型中各层对应的协议如下：</p>
+
+<p><img src="/images/TcpModule.jpg" width="100%" height="100%"></p>
+
+<h2>TCP 的封装</h2>
+
+<p>TCP/IP 模型实际上是一个协议栈，数据发送端主机的应用层到接收端主机的应用层需要经过层层的封包与解包的过程。</p>
+
+<p>封包过程如下:</p>
+
+<ul>
+<li>应用层程序将自己要发送的数据传输给传输层的 TCP 协议，TCP 协议会在数据的前面加上自己的 TCP头部信息，此时称该数据为 TCP 报文段。</li>
+<li>该报文段被发给网络层的 IP 协议，IP 协议同样加上自己的头部信息，称作 IP 数据报。</li>
+<li>IP 协议将数据发给网络接口层的 arp 协议，此时称为数据帧。</li>
+<li>此后数据就通过物理介质被发送给对端主机。</li>
+</ul>
+
+<p>示意图如下：</p>
+
+<p><img src="/images/TcpStack.png" width="100%" height="100%"></p>
+
+<p>接收端的解包过程和此相反，在此不表。</p>
+
+<p>【完】</p>
+
+        </div>
+    </body>
+</html>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/haoel/anti-baidu@0.6.2/js/anti-baidu-latest.min.js" charset="UTF-8"></script>

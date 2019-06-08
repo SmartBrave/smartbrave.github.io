@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=0.5">
+
+        <link href="/css/main.css" rel="stylesheet" type="text/css">
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Atom feed">
+        <link rel="shortcut icon" href="/image/Yc.jpg">
+        <link href="/css/prism.css" rel="stylesheet" />
+        <title>面试题7：用两个栈实现队列</title>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-78070816-3"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            
+            gtag('config', 'UA-78070816-3');
+        </script>
+    </head>
+    <body>
+        <!-- suppport block of mathjax -->
+        <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+        </script>
+        <!-- support mathjax inline -->
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({
+                tex2jax: {inlineMath: [['$','$']]},
+                messageStyle: "none"
+            });
+        </script>
+        <script>
+            if (/mobile/i.test(navigator.userAgent) || /android/i.test(navigator.userAgent)){
+                document.body.classList.add('mobile');
+            }
+        </script>
+        <script src="/js/prism.js"></script>
+        <div class="inner">
+            <h2>面试题7：用两个栈实现队列</h2>
+
+<h3>题目：用两个栈实现一个队列。队列的声明如下，请实现它的两个函数appendTail和deleteHead，分别完成在队列尾部插入节点和在队列头部删除节点的功能。</h3>
+
+<pre><code>template&lt;typename T&gt;
+class Queue{
+public:
+    Queue()
+    {}
+    ~Queue()
+    {}
+    bool appendTail(const T&amp;amp; t);
+    T deleteHead();
+private:
+    stack&lt;T&gt; s1;
+    stack&lt;T&gt; s2;
+};
+</code></pre>
+
+<hr />
+
+<h3>分析</h3>
+
+<p>首先，我们需要知道队列和栈他们各自的特点。他们都是一个线性数据结构。在STL里面，他们是作为容器适配器出现的。尽管如此，栈和队列在逻辑和对数据的操作方式上还是有很大的区别的。比如栈是一种后进先出(LIFO，Last In First Out)的数据结构，它只能在一端对数据进行操作，称为栈顶。操作方式有push和pop。而队列是一种先进先出(FIFO，First In First Out)的数据结构，可以在两端进行操作，分别称为队首和队尾。操作方式有push和front。</p>
+
+<p>知道了以上这些，我们再来分析题目。题目要求用两个栈实现一个队列，而队列要求在两端操作，而栈只能在一端进行操作，怎么办呢？很自然地，我们会想到将两个栈尾尾相接，这样在向队列中插入元素的时候，就可以向栈s1中push，而删除时在栈s2中pop。但要注意的是，如果s2为空而s1不为空，在删除时需要将s1中的元素全部移动到s2中再从s2中pop。</p>
+
+<h3>以上思路转化成代码如下：</h3>
+
+<pre><code>bool Queue::appendTail(const T&amp;amp; t)
+    {
+        s1.push(t);
+    }
+    T deleteHead()
+    {
+        if(s2.empty())
+        {
+            while(!s1.empty())
+            {
+                s2.push(s1.top());
+                s1.pop();
+            }
+        }
+        if(!s2.empty())
+        {
+            T tmp=s2.top();
+            s2.pop();
+            return tmp;
+        }
+    }
+</code></pre>
+
+<p><strong>以上</strong></p>
+
+<p>如果你有任何想法或是可以改进的地方，欢迎和我交流！</p>
+
+<p>完整代码及测试用例在github上：<a href="https://github.com/SmartBrave/Sword-to-Offer/blob/master/07_QueueWithTwoStacks/main.cpp">点我前往</a></p>
+
+        </div>
+    </body>
+</html>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/haoel/anti-baidu@0.6.2/js/anti-baidu-latest.min.js" charset="UTF-8"></script>

@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=0.5">
+
+        <link href="/css/main.css" rel="stylesheet" type="text/css">
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Atom feed">
+        <link rel="shortcut icon" href="/image/Yc.jpg">
+        <link href="/css/prism.css" rel="stylesheet" />
+        <title>俄罗斯方块源码</title>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-78070816-3"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            
+            gtag('config', 'UA-78070816-3');
+        </script>
+    </head>
+    <body>
+        <!-- suppport block of mathjax -->
+        <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+        </script>
+        <!-- support mathjax inline -->
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({
+                tex2jax: {inlineMath: [['$','$']]},
+                messageStyle: "none"
+            });
+        </script>
+        <script>
+            if (/mobile/i.test(navigator.userAgent) || /android/i.test(navigator.userAgent)){
+                document.body.classList.add('mobile');
+            }
+        </script>
+        <script src="/js/prism.js"></script>
+        <div class="inner">
+            <h2>俄罗斯方块源码</h2>
+
+<p>这是博主大一时做的一个小游戏，当时是纯兴趣使然。做成之后兴奋地手舞足蹈，玩的不亦乐乎。现在想来，喜悦不是来自游戏本身，而是自己独立完成的快感和编码的趣味。</p>
+
+<p>现在把代码公布出来，一是备存，二是希望聪慧的你，能一眼看出其中的 bug，并告知我。同是天涯程序员，相助何须曾相识，对吧？</p>
+
+<p>当时毕竟资历浅显，代码中如有看起来特别幼稚的地方，还请诸君万勿见笑！</p>
+
+<p><img src="/images/Tetris.jpg" width="100%" height="100%"></p>
+
+<pre><code class="language-C">#include &lt;stdio.h&gt;
+#include &lt;conio.h&gt;
+#include &lt;time.h&gt;
+#include &lt;windows.h&gt;
+#include &lt;vld.h&gt;
+
+#define MAXWIDTH 24
+#define MAXHEIGHT 24
+#define BOXNUMBER 4
+const int rx=MAXWIDTH+5,ry=MAXHEIGHT/3;
+#define FIRSTSPEED 500
+
+typedef enum num
+{
+	/*
+	 *	one				I
+	 *	two				O
+	 *	three	    L
+	 *	four	    J
+	 *	five	    T
+	 *	six				Z
+	 *	seven	    S
+	 */
+	one,two,three,four,five,six,seven
+}en;
+
+typedef struct pos
+{
+	int x,y;
+}position;
+
+typedef struct point
+{
+	bool have;
+	int color;
+}point;
+
+typedef struct box
+{
+	en style;
+	position pos[BOXNUMBER];
+
+}box;
+
+void gotoxy(int x,int y)
+{
+	COORD pos;
+	pos.X=2*x;
+	pos.Y=y;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),pos);
+}
+
+void color(int a)//颜色函数
+{
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),a);
+}
+
+void Interface(point arr[][MAXWIDTH])
+{
+	int i,j;
+	for(i=0;i&lt;MAXHEIGHT;i++)
+	{
+		for(j=0;j&lt;MAXWIDTH;j++)
+		{
+			if(i==MAXHEIGHT-1||j==MAXWIDTH-1||j==0)
+			{
+				arr[i][j].have=1;
+			}
+		}
+	}
+	for(i=0;i&lt;MAXHEIGHT;i++)
+	{
+		for(j=0;j&lt;MAXWIDTH;j++)
+		{
+			if(1==arr[i][j].have)
+				printf(&quot;■&quot;);
+
+			else
+
+				printf(&quot;  &quot;);
+		}
+
+		printf(&quot;\n&quot;);
+	}
+
+	for (i=rx;i&lt;rx+8;i++)
+	{
+		for (j=ry;j&lt;ry+7;j++)
+		{
+			if (i==rx||i==rx+7||j==ry+7-1)
+			{
+				gotoxy(i,j);
+				printf(&quot;■&quot;);
+			}
+			else
+			{
+				gotoxy(i,j);
+				printf(&quot;  &quot;);
+			}
+		}
+	}
+
+}
+
+void cleanbox(box *b)
+{
+	int k;
+	for (k=0;k&lt;4;k++)
+	{
+		gotoxy(b-&gt;pos[k].x,b-&gt;pos[k].y);
+		printf(&quot;  &quot;);
+	}
+}
+
+void CreateReady(box * ready)
+{
+	int ran,k;
+	ran=rand()%7+1;
+	cleanbox(ready);
+	switch(ran)
+	{
+	case 1:
+		ready-&gt;style=one;
+		ready-&gt;pos[0].x=rx+2;
+		ready-&gt;pos[0].y=ry+1;
+		ready-&gt;pos[1].x=rx+2;
+		ready-&gt;pos[1].y=ry+2;
+		ready-&gt;pos[2].x=rx+2;
+		ready-&gt;pos[2].y=ry+3;
+		ready-&gt;pos[3].x=rx+2;
+		ready-&gt;pos[3].y=ry+4;
+		break;
+	case 2:
+		ready-&gt;style=two;
+		ready-&gt;pos[0].x=rx+3;
+		ready-&gt;pos[0].y=ry+2;
+		ready-&gt;pos[1].x=rx+4;
+		ready-&gt;pos[1].y=ry+2;
+		ready-&gt;pos[2].x=rx+3;
+		ready-&gt;pos[2].y=ry+3;
+		ready-&gt;pos[3].x=rx+4;
+		ready-&gt;pos[3].y=ry+3;
+		break;
+	case 3:
+		ready-&gt;style=three;
+		ready-&gt;pos[0].x=rx+3;
+		ready-&gt;pos[0].y=ry+1;
+		ready-&gt;pos[1].x=rx+3;
+		ready-&gt;pos[1].y=ry+2;
+		ready-&gt;pos[2].x=rx+3;
+		ready-&gt;pos[2].y=ry+3;
+		ready-&gt;pos[3].x=rx+4;
+		ready-&gt;pos[3].y=ry+3;
+		break;
+	case 4:
+		ready-&gt;style=four;
+		ready-&gt;pos[0].x=rx+4;
+		ready-&gt;pos[0].y=ry+1;
+		ready-&gt;pos[1].x=rx+4;
+		ready-&gt;pos[1].y=ry+2;
+		ready-&gt;pos[2].x=rx+4;
+		ready-&gt;pos[2].y=ry+3;
+		ready-&gt;pos[3].x=rx+3;
+		ready-&gt;pos[3].y=ry+3;
+		break;
+	case 5:
+		ready-&gt;style=five;
+		ready-&gt;pos[0].x=rx+2;
+		ready-&gt;pos[0].y=ry+2;
+		ready-&gt;pos[1].x=rx+3;
+		ready-&gt;pos[1].y=ry+2;
+		ready-&gt;pos[2].x=rx+4;
+		ready-&gt;pos[2].y=ry+2;
+		ready-&gt;pos[3].x=rx+3;
+		ready-&gt;pos[3].y=ry+3;
+		break;
+	case 6:
+		ready-&gt;style=six;
+		ready-&gt;pos[0].x=rx+2;
+		ready-&gt;pos[0].y=ry+2;
+		ready-&gt;pos[1].x=rx+3;
+		ready-&gt;pos[1].y=ry+2;
+		ready-&gt;pos[2].x=rx+3;
+		ready-&gt;pos[2].y=ry+3;
+		ready-&gt;pos[3].x=rx+4;
+		ready-&gt;pos[3].y=ry+3;
+		break;
+	case 7:
+		ready-&gt;style=seven;
+		ready-&gt;pos[1].x=rx+3;
+		ready-&gt;pos[1].y=ry+2;
+		ready-&gt;pos[0].x=rx+4;
+		ready-&gt;pos[0].y=ry+2;
+		ready-&gt;pos[2].x=rx+2;
+		ready-&gt;pos[2].y=ry+3;
+		ready-&gt;pos[3].x=rx+3;
+		ready-&gt;pos[3].y=ry+3;
+		break;
+	}
+
+	for(k=0;k&lt;4;k++)
+	{
+		color(ready-&gt;style+8);
+		gotoxy(ready-&gt;pos[k].x,ready-&gt;pos[k].y);
+		printf(&quot;■&quot;);
+	}
+	color(0x07);
+	gotoxy(MAXWIDTH,MAXHEIGHT);
+}
+
+void ConverttoNow(box * ready,box *now)
+{
+	int k;
+	now-&gt;style=ready-&gt;style;
+	for (k=0;k&lt;4;k++)
+	{
+		now-&gt;pos[k].x=ready-&gt;pos[k].x-21;
+		now-&gt;pos[k].y=ready-&gt;pos[k].y-(ry+2);
+	}
+	color(ready-&gt;style+8);
+	for(k=0;k&lt;4;k++)
+	{
+		gotoxy(now-&gt;pos[k].x,now-&gt;pos[k].y);
+		printf(&quot;■&quot;);
+	}
+	color(0x07);
+}
+
+void change(box * now)
+{
+	int tmpx,tmpy;
+	if (now-&gt;style==two)
+	{
+		return;
+	}
+	int k;
+	for(k=0;k&lt;4;k++)
+	{
+		gotoxy(now-&gt;pos[k].x,now-&gt;pos[k].y);
+		printf(&quot;  &quot;);
+	}
+	color(now-&gt;style+8);
+	for (k=0;k&lt;4;k++)
+	{
+		tmpx=now-&gt;pos[k].x;
+		tmpy=now-&gt;pos[k].y;
+		now-&gt;pos[k].x=-(tmpy-now-&gt;pos[1].y)+now-&gt;pos[1].x;
+		now-&gt;pos[k].y=(tmpx-now-&gt;pos[1].x)+now-&gt;pos[1].y;
+		gotoxy(now-&gt;pos[k].x,now-&gt;pos[k].y);
+		printf(&quot;■&quot;);
+	}
+	color(0x07);
+	gotoxy(MAXWIDTH,MAXHEIGHT);
+}
+
+void accelerate(int &amp; speed)
+{
+	speed*=0.3;
+}
+
+void down(box * now)
+{
+	int k;
+	for (k=0;k&lt;4;k++)
+	{
+		gotoxy(now-&gt;pos[k].x,now-&gt;pos[k].y);
+		printf(&quot;  &quot;);
+		now-&gt;pos[k].y++;
+	}
+	color(now-&gt;style+8);
+	for(k=0;k&lt;4;k++)
+	{
+		gotoxy(now-&gt;pos[k].x,now-&gt;pos[k].y);
+		printf(&quot;■&quot;);
+	}
+	color(0x07);
+	gotoxy(MAXWIDTH,MAXHEIGHT);
+}
+
+int left(box * now,point arr[][MAXWIDTH])
+{
+	int i,j,k;
+	for (k=0;k&lt;4;k++)
+	{
+		for (i=MAXHEIGHT;i&gt;0;i--)
+		{
+			for (j=MAXWIDTH;j&gt;0;j--)
+			{
+				if (arr[i][j-1].have==1&amp;&amp;now-&gt;pos[k].x==j&amp;&amp;now-&gt;pos[k].y==i)
+				{
+					return 0;
+				}
+			}
+		}
+	}
+	for (k=0;k&lt;4;k++)
+	{
+		gotoxy(now-&gt;pos[k].x,now-&gt;pos[k].y);
+		printf(&quot;  &quot;);
+		now-&gt;pos[k].x--;
+	}
+	color(now-&gt;style+8);
+	for(k=0;k&lt;4;k++)
+	{
+		gotoxy(now-&gt;pos[k].x,now-&gt;pos[k].y);
+		printf(&quot;■&quot;);
+	}
+	color(0x07);
+	gotoxy(MAXWIDTH,MAXHEIGHT);
+	return 1;
+}
+
+int right(box * now,point arr[][MAXWIDTH])
+{
+	int i,j,k;
+	for (k=0;k&lt;4;k++)
+	{
+		for (i=MAXHEIGHT;i&gt;0;i--)
+		{
+			for (j=MAXWIDTH;j&gt;0;j--)
+			{
+				if (arr[i][j+1].have==1&amp;&amp;now-&gt;pos[k].x==j&amp;&amp;now-&gt;pos[k].y==i)
+				{
+					return 0;
+				}
+			}
+		}
+	}
+	for (k=0;k&lt;4;k++)
+	{
+		gotoxy(now-&gt;pos[k].x,now-&gt;pos[k].y);
+		printf(&quot;  &quot;);
+		now-&gt;pos[k].x++;
+	}
+	color(now-&gt;style+8);
+	for(k=0;k&lt;4;k++)
+	{
+		gotoxy(now-&gt;pos[k].x,now-&gt;pos[k].y);
+		printf(&quot;■&quot;);
+	}
+	color(0x07);
+	gotoxy(MAXWIDTH,MAXHEIGHT);
+	return 1;
+}
+
+int IsBottom(const box *now,const point arr[][MAXWIDTH])
+{
+	int i,j,k;
+	for (k=0;k&lt;4;k++)
+	{
+		for (i=MAXHEIGHT;i&gt;0;i--)
+		{
+			for (j=MAXWIDTH;j&gt;0;j--)
+			{
+				if (arr[i][j].have==1&amp;&amp;now-&gt;pos[k].x==j&amp;&amp;now-&gt;pos[k].y+1==i)
+				{
+					return 1;
+				}
+			}
+		}
+	}
+	return 0;
+}
+
+void ConverttoArr(box *now,point arr[][MAXWIDTH])
+{
+	int k;
+	for (k=0;k&lt;4;k++)
+	{
+		arr[now-&gt;pos[k].y][now-&gt;pos[k].x].have=1;
+		arr[now-&gt;pos[k].y][now-&gt;pos[k].x].color=now-&gt;style;
+	}
+}
+
+void CleanLine(point arr[][MAXWIDTH],int n)	//清除一行时设置颜色
+{
+	int i,j;
+	for (j=1;j&lt;MAXWIDTH-1;j++)
+	{
+		gotoxy(j,n);
+		printf(&quot;  &quot;);
+	}
+	for (i=n;i&gt;=0;i--)
+	{
+		for (j=1;j&lt;MAXWIDTH-1;j++)
+		{
+			arr[i][j].have=arr[i-1][j].have;
+			if (arr[i][j].have==1)
+			{
+				gotoxy(j,i-1);
+				printf(&quot;  &quot;);
+				gotoxy(j,i);
+				color(arr[i][j].color+8);
+				printf(&quot;■&quot;);
+				color(0x07);
+			}
+		}
+	}
+}
+
+int IsLine(point arr[][MAXWIDTH],int *score)
+{
+	int i,j;
+	for (i=MAXHEIGHT-1-1;i&gt;=0;i--)
+	{
+		for (j=1;j&lt;MAXWIDTH-1;j++)
+		{
+			if (arr[i][j].have==0)
+			{
+				break;
+			}
+		}
+		if (j==MAXWIDTH-1)
+		{
+			*score+=5;
+			CleanLine(arr,i);
+		}
+	}
+	return 1;
+}
+
+void showscore(const int const * score)
+{
+	gotoxy(rx,ry-5);
+	printf(&quot;您的战绩：%d&quot;,*score);
+	gotoxy(rx,ry-4);
+	printf(&quot;按p暂停!&quot;);
+	gotoxy(MAXWIDTH,MAXHEIGHT);
+}
+
+int main()
+{
+	//system(&quot;mode con cols=250 lines=250&quot;);
+	box now,ready;
+	int score=0;
+	int speed=FIRSTSPEED;
+	int ch=0;
+	static point arr[MAXHEIGHT][MAXWIDTH];	//auto set 0
+	Interface(arr);
+	srand(time(NULL));
+	CreateReady(&amp;ready);
+	ConverttoNow(&amp;ready,&amp;now);
+	CreateReady(&amp;ready);
+	while(true)
+	{
+		if(kbhit())
+		{
+			ch=getch();			//key value is double bytes,so get twice
+			if(ch==224)
+			{
+				ch=getch();
+			}
+		}
+		if (IsBottom(&amp;now,arr))
+		{
+			ConverttoArr(&amp;now,arr);
+			ConverttoNow(&amp;ready,&amp;now);
+			CreateReady(&amp;ready);
+			speed=FIRSTSPEED;
+		}
+		IsLine(arr,&amp;score);
+		showscore(&amp;score);
+		switch (ch)
+		{
+		case 'p':
+			;
+			break;
+		case 0:
+label:
+			down(&amp;now);
+			break;
+		case 72:
+			change(&amp;now);
+			ch=0;
+			goto label;
+			break;
+		case 80:
+			accelerate(speed);
+			ch=0;
+			break;
+		case 75:
+			if(left(&amp;now,arr)==0)
+			{
+				goto label;
+			}
+			ch=0;
+			break;
+		case 77:
+			if(right(&amp;now,arr)==0)
+			{
+				goto label;
+			}
+			ch=0;
+			break;
+		default:
+			break;
+		}
+		Sleep(speed);
+	}
+	return 0;
+}
+</code></pre>
+
+        </div>
+    </body>
+</html>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/haoel/anti-baidu@0.6.2/js/anti-baidu-latest.min.js" charset="UTF-8"></script>

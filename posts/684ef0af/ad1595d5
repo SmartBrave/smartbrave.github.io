@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=0.5">
+
+        <link href="/css/main.css" rel="stylesheet" type="text/css">
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Atom feed">
+        <link rel="shortcut icon" href="/image/Yc.jpg">
+        <link href="/css/prism.css" rel="stylesheet" />
+        <title>面试题34：丑数</title>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-78070816-3"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            
+            gtag('config', 'UA-78070816-3');
+        </script>
+    </head>
+    <body>
+        <!-- suppport block of mathjax -->
+        <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+        </script>
+        <!-- support mathjax inline -->
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({
+                tex2jax: {inlineMath: [['$','$']]},
+                messageStyle: "none"
+            });
+        </script>
+        <script>
+            if (/mobile/i.test(navigator.userAgent) || /android/i.test(navigator.userAgent)){
+                document.body.classList.add('mobile');
+            }
+        </script>
+        <script src="/js/prism.js"></script>
+        <div class="inner">
+            <h2>面试题34：丑数</h2>
+
+<p><strong>题目：我们把只包含因子2,3和5的数称作丑数。求按从小到大的顺序的第1500个丑数。例如6,8都是丑数，但14不是，因为它包含因子7.习惯上我们把1当做第一个丑数。</strong></p>
+
+<hr />
+
+<h3>分析</h3>
+
+<p>最直观的方法是从1往后逐个判断每个数字，并设一个计数器。如果一个数是丑数，计数器加一。当计数器到1500时，输出这个数即可。但求一个数的所有因子的时间复杂度为O(n<sup>0.5</sup>)(对否？),总的时间复杂度为O(n<sup>1.5</sup>)。</p>
+
+<p>更好的一种方法是以空间换时间，即创建一个数组保存已经找到的丑数，这样就不用重复计算前面已经计算过的。而是每次用数组中的一个数来计算出下一个丑数。一般我们会选择数组中2,3,5对应的最后一个数来计算下一个丑数，所以需要使数组是有序的。因此可以用3个变量T2，T3，T5来指示2,3,5对应的最后一个丑数，然后用着三个数分别乘以2,3和5得到R2，R3和R5。只需要将R2，R3，R5中的最小者放入数组中即可，并更新相应的T2，T3或T5。</p>
+
+<p>代码如下：</p>
+
+<p>```int Min(int a,int b,int c)
+{
+    int min=a&gt;b?b:a;
+    min=min&gt;c?c:min;
+    return min;
+}</p>
+
+<p>int GetUglyNumber(int index)
+{
+    if(index&lt;=0)
+        return 0;
+    vector<int> v;
+    v.push<em>back(1);
+    int M2=0,M3=0,M5=0;
+    while(v.size()&lt;index)
+    {
+        int min=Min(v[M2]<em>2,v[M3]</em>3,v[M5]*5);
+        v.push</em>back(min);
+        while(v[M2]<em>2&lt;=v[v.size()-1])
+            M2++;
+        while(v[M3]</em>3&lt;=v[v.size()-1])
+            M3++;
+        while(v[M5]*5&lt;=v[v.size()-1])
+            M5++;
+    }
+    return v[v.size()-1];
+}
+```</p>
+
+<p><strong>以上</strong></p>
+
+<p>如果你有任何想法或是可以改进的地方，欢迎和我交流！</p>
+
+<p>完整代码及测试用例在github上：<a href="https://github.com/SmartBrave/Sword-to-Offer/blob/master/34_UglyNumber/main.cpp">点我前往</a></p>
+
+<div>[来自为知笔记(Wiz)](http://www.wiz.cn/i/96171253 "来自为知笔记(Wiz)")</div>
+
+        </div>
+    </body>
+</html>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/haoel/anti-baidu@0.6.2/js/anti-baidu-latest.min.js" charset="UTF-8"></script>

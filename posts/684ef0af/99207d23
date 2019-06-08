@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=0.5">
+
+        <link href="/css/main.css" rel="stylesheet" type="text/css">
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Atom feed">
+        <link rel="shortcut icon" href="/image/Yc.jpg">
+        <link href="/css/prism.css" rel="stylesheet" />
+        <title>面试题14：调整数组顺序使奇数位于偶数前面</title>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-78070816-3"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            
+            gtag('config', 'UA-78070816-3');
+        </script>
+    </head>
+    <body>
+        <!-- suppport block of mathjax -->
+        <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+        </script>
+        <!-- support mathjax inline -->
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({
+                tex2jax: {inlineMath: [['$','$']]},
+                messageStyle: "none"
+            });
+        </script>
+        <script>
+            if (/mobile/i.test(navigator.userAgent) || /android/i.test(navigator.userAgent)){
+                document.body.classList.add('mobile');
+            }
+        </script>
+        <script src="/js/prism.js"></script>
+        <div class="inner">
+            <h2>面试题14：调整数组顺序使奇数位于偶数前面</h2>
+
+<h3>题目：输入一个整数数组，实现一个函数来调整数组中数字的顺序，是得所有的奇数位于数组的前半部分，所有偶数位于数组的后半部分。</h3>
+
+<hr />
+
+<h3>分析</h3>
+
+<p>最简单的办法就是开辟和原数组同样大小的空间，顺次扫描原数组2次，第一次将所有奇数放进新数组中，第二次将偶数放入就可以。这种方法的时间复杂度为O(n)，空间复杂度为O(n)。</p>
+
+<p>代码如下：</p>
+
+<pre><code>
+void ReorderOddEven(vector&lt;int&gt;&amp; arr)
+{
+    vector&lt;int&gt; newarr;
+    int i;
+    for(i=0;i&lt;arr.size();++i)
+    {
+        if(arr[i]&amp;0x1)
+        {
+            newarr.push_back(arr[i]);
+        }
+    }
+    for(i=0;i&lt;arr.size();++i)
+    {
+        if(!(arr[i]&amp;0x1))
+        {
+            newarr.push_back(arr[i]);
+        }
+    }
+    arr.clear();
+    arr=newarr;
+}
+</code></pre>
+
+<p>以上算法的优点是不会改变原数据的相对顺序。我们也可以只扫描原数组一次，若为奇数，则从新数组前面开始往后放；若为偶数，则从新数组后面开始往前放。这种方法缺点是会使偶数的相对顺序翻转。代码从略。</p>
+
+<p>一种更好的思路是，受快速排序算法的启发，我们模仿快速排序的partition函数，从原数组的两端向中间扫描，前、后指针分别遇到偶数和奇数就停下来，然后交换他们即可。</p>
+
+<p>代码如下：</p>
+
+<pre><code>
+void ReorderOddEven(vector&lt;int&gt;&amp; arr)
+{
+    int i=0,j=arr.size()-1;
+    while(i&lt;j)
+    {
+        while(i&lt;j &amp;&amp; (arr[i] &amp; 0x1))
+            i++;
+        while(i&lt;j &amp;&amp; !(arr[j] &amp; 0x1))
+            j--;
+        swap(arr[i],arr[j]);
+    }
+}
+</code></pre>
+
+<p><strong>以上</strong></p>
+
+<p>如果你有任何想法或是可以改进的地方，欢迎和我交流！</p>
+
+<p>完整代码及测试用例在github上：<a href="https://github.com/SmartBrave/Sword-to-Offer/blob/master/14_ReorderArray/main.cpp">点我前往</a></p>
+
+        </div>
+    </body>
+</html>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/haoel/anti-baidu@0.6.2/js/anti-baidu-latest.min.js" charset="UTF-8"></script>
