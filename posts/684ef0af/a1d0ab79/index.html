@@ -39,10 +39,9 @@
         <div class="inner">
             <h2>面试题13：在O(1)时间 内删除链表节点</h2>
 
-<h3>题目：给定单向链表的头指针和一个节点指针，定义一个函数在O(1)时间删除该节点。链表节点与函数的定义如下：</h3>
+<p><strong>题目：给定单向链表的头指针和一个节点指针，定义一个函数在O(1)时间删除该节点。链表节点与函数的定义如下：</strong></p>
 
-<pre><code>
-struct ListNode
+<pre><code class="language-C">struct ListNode
 {
 	int value;
 	ListNode* next;
@@ -51,16 +50,13 @@ struct ListNode
 void DeleteNode(ListNode* head,ListNode* pToBeDeleted);
 </code></pre>
 
-<hr />
-
 <h3>分析</h3>
 
-<p>在单向链表中删除一个节点，通常的做法是从链表头开始遍历，如果某个节点的next等于要删除的节点，就将该next改为待删除节点的下一个节点，然后删除该链表节点即可。</p>
+<p>在单向链表中删除一个节点，通常的做法是从链表头开始遍历，如果某个节点的 next 等于要删除的节点，就将该 next 改为待删除节点的下一个节点，然后删除该链表节点即可。</p>
 
 <p>代码如下：</p>
 
-<pre><code>
-void DeleteNode(ListNode* head,ListNode* pToBeDeleted)
+<pre><code class="language-C">void DeleteNode(ListNode* head,ListNode* pToBeDeleted)
 {
 	if(head==NULL || pToBeDeleted==NULL)
 		return;
@@ -84,20 +80,20 @@ void DeleteNode(ListNode* head,ListNode* pToBeDeleted)
 }
 </code></pre>
 
-<p>由于这样的思路需要顺序查找，时间复杂度自然就是O(n)了。</p>
+<p>由于这样的思路需要顺序查找，时间复杂度自然就是 O(n) 了。</p>
 
-<p>因为我们要删除某个节点，如果不是第一个节点的话，就需要更改它前面节点的next值。而单链表是无法逆行的，所以我们可以按如下步骤做：</p>
+<p>因为我们要删除某个节点，如果不是第一个节点的话，就需要更改它前面节点的 next 值。而单链表是无法逆行的，所以我们可以按如下步骤做：</p>
 
 <ol>
-<li>1. 如果待删除节点不是最后一个节点，就用他的next节点的value覆盖它的value，然后删掉它的next节点。</li>
-<li>2. 如果是最后一个节点，还是老老实实的顺序遍历吧。</li>
+<li>如果待删除节点不是最后一个节点，就用他的 next 节点的 value 覆盖它的 value，然后删掉它的 next 节点。</li>
+<li>如果是最后一个节点，还是老老实实的顺序遍历吧。</li>
 </ol>
 
-<p><strong>But，这种方法会带来一个问题，就是可能会使原来指向待删除节点的next节点的指针在删除操作之后失效！！</strong>任何事物都是有两面性的，将删除操作时间复杂度降到了O(1)，就要接受这种类似于迭代器失效问题的后果。</p>
+<p>But，这种方法会带来一个问题，就是可能会使原来指向待删除节点的 next 节点的指针在删除操作之后失效！任何事物都是有两面性的，将删除操作时间复杂度降到了 O(1)，就要接受这种类似于迭代器失效问题的后果。</p>
 
 <p>代码如下：</p>
 
-<pre><code>void DeleteNode(ListNode** pListHead,ListNode* pToBeDeleted)
+<pre><code class="language-C">void DeleteNode(ListNode** pListHead,ListNode* pToBeDeleted)
 {
     if(pListHead==NULL || *pListHead==NULL || pToBeDeleted==NULL)
         return;
@@ -131,8 +127,6 @@ void DeleteNode(ListNode* head,ListNode* pToBeDeleted)
     }
 }
 </code></pre>
-
-<p><strong>以上</strong></p>
 
 <p>如果你有任何想法或是可以改进的地方，欢迎和我交流！</p>
 

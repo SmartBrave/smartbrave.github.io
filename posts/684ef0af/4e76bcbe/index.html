@@ -39,12 +39,11 @@
         <div class="inner">
             <h2>面试题17：合并两个排序的链表</h2>
 
-<h3>题目：输入两个递增排序的链表，合并这两个链表并使新链表中的节点仍然是按照递增排序的。</h3>
+<p><strong>题目：输入两个递增排序的链表，合并这两个链表并使新链表中的节点仍然是按照递增排序的。</strong></p>
 
 <p>链表的定义如下：</p>
 
-<pre><code>
-struct ListNode{
+<pre><code class="language-C">struct ListNode{
     int value;
     ListNode* next;
     ListNode(int data=int()):value(data),next(NULL)
@@ -52,16 +51,13 @@ struct ListNode{
 };
 </code></pre>
 
-<hr />
-
 <h3>分析</h3>
 
-<p>这是典型的链表归并问题。因为两个链表都是排好序的，所以我们只需要初始化两个指针，分别指向两个链表的第一个节点。并在一个循环中比较两个节点的value值，将较小的摘下来放到新链表中去。在循环结束时，肯定会有一个指针走到了其对应链表的尾部，而另一个还没有走到尾部。所以需要将这些节点加入到新链表中去。</p>
+<p>这是典型的链表归并问题。因为两个链表都是排好序的，所以我们只需要初始化两个指针，分别指向两个链表的第一个节点。并在一个循环中比较两个节点的 value 值，将较小的摘下来放到新链表中去。在循环结束时，肯定会有一个指针走到了其对应链表的尾部，而另一个还没有走到尾部。所以需要将这些节点加入到新链表中去。</p>
 
 <p>代码如下：</p>
 
-<pre><code>
-ListNode* Merge(ListNode* head1,ListNode* head2)
+<pre><code class="language-C">ListNode* Merge(ListNode* head1,ListNode* head2)
 {
     if(head1==NULL)
         return head2;
@@ -125,8 +121,6 @@ ListNode* Merge(ListNode* head1,ListNode* head2)
     return newhead;
 }
 </code></pre>
-
-<p><strong>以上</strong></p>
 
 <p>如果你有任何想法或是可以改进的地方，欢迎和我交流！</p>
 

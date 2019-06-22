@@ -41,8 +41,6 @@
 
 <p><strong>题目一：输入一个英文句子，反转句子中单词的顺序，但单词内字符的顺序不变。为简单起见，标点符号和普通字母一样处理。例如输入字符串”I am a student.”，则输出”student. a am I”。</strong></p>
 
-<hr />
-
 <h3>分析</h3>
 
 <p>解法如下：</p>
@@ -54,28 +52,28 @@
 
 <p>代码如下：</p>
 
-<pre>void ReverseSentence(string&amp; str)
+<pre><code class="language-c">void ReverseSentence(string str)
 {
     int i,j,tmp;
-    for(i=0,j=str.size()-1;i<j;++i,--j)
+    for(i=0,j=str.size()-1;i&lt;j;++i,--j)
     {
         swap(str[i],str[j]);
     }
-    for(i=0;i<str.size();)
+    for(i=0;i&lt;str.size();)
     {
         j=i;
-        while(j<str.size() &amp;&amp; str[j]!=' ')
+        while(j&lt;str.size() &amp;&amp; str[j]!=' ')
             j++;
         tmp=j;
         j--;
-        for(;i<j;++i,--j)
+        for(;i&lt;j;++i,--j)
             swap(str[i],str[j]);
-        while(tmp<str.size() &amp;&amp; str[tmp]==' ')
+        while(tmp&lt;str.size() &amp;&amp; str[tmp]==' ')
             tmp++;
         i=tmp;
     }
 }
-</pre>
+</code></pre>
 
 <p><strong>题目二：字符串的左旋操作时把字符串的前面若干个字符转移到字符串的尾部。请定义一个函数实现字符串左旋操作的功能。比如输入字符串”abcdefg”和数字2，改函数将返回左旋2位得到的结果”cdefgab”。</strong></p>
 
@@ -87,22 +85,21 @@
 
 <p>代码如下：</p>
 
-<pre>void LeftRotateString(string&amp; str,int n)
-{
-    if(n<=0)
+<pre><code class="language-c">void LeftRotateString(string&amp; str,int n){
+    if(n&lt;=0)
         return;
     n%=str.size();
     int i,j;
-    for(i=0,j=str.size()-1;i<j;++i,--j)
+    for(i=0,j=str.size()-1;i&lt;j;++i,--j)
         swap(str[i],str[j]);
     i=0,j=str.size()-n-1;
-    while(i<j)
+    while(i&lt;j)
         swap(str[i++],str[j--]);
     i=str.size()-n,j=str.size()-1;
-    while(i<j)
+    while(i&lt;j)
         swap(str[i++],str[j--]);
 }
-</pre>
+</code></pre>
 
 <p><strong>以上</strong></p>
 

@@ -39,7 +39,7 @@
         <div class="inner">
             <h2>面试题5：从尾到头打印链表</h2>
 
-<h3>题目：输入一个链表的头结点，从尾到头反过来打印出每个节点的值。</h3>
+<p><strong>题目：输入一个链表的头结点，从尾到头反过来打印出每个节点的值。</strong></p>
 
 <h3>分析</h3>
 
@@ -51,72 +51,67 @@
 <li>迭代方案</li>
 </ol>
 
-<hr />
+<p>如果逆置链表的话，会改变链表原先的结构。我们可以在面试时询问面试过是否可以改变链表，如果是肯定的回答，就可以采用这种办法。否则只能采用后面的方法。</p>
 
-<p><strong>如果逆置链表的话，会改变链表原先的结构。我们可以在面试时询问面试过是否可以改变链表，如果是肯定的回答，就可以采用这种办法。否则只能采用后面的方法。</strong></p>
-
-<p><strong>逆置链表也很简单，只需要从第二个节点开始，顺次摘取一个节点头插就可以。</strong></p>
+<p>逆置链表也很简单，只需要从第二个节点开始，顺次摘取一个节点头插就可以。</p>
 
 <h3>代码如下</h3>
 
-<pre><code>list* PrintListInReversedOrder(list* &amp;amp;amp;head)
+<pre><code class="language-c">list* PrintListInReversedOrder(list* head)
 {
-    if(head==NULL || head-&amp;amp;gt;next==NULL)
+    if(head==NULL || head-&gt;next==NULL)
         return head;
     list* tmp=NULL;
-    list* cur=head-&amp;amp;gt;next;
-    head-&amp;amp;gt;next=NULL;
+    list* cur=head-&gt;next;
+    head-&gt;next=NULL;
     while(cur!=NULL)
     {
-        tmp=cur-&amp;amp;gt;next;
-        cur-&amp;amp;gt;next=head;
+        tmp=cur-&gt;next;
+        cur-&gt;next=head;
         head=cur;
         cur=tmp;
     }
     cur=head;
     while(cur!=NULL)
     {
-        cout&amp;amp;lt;&amp;amp;lt;cur-&amp;amp;gt;data&amp;amp;lt;&amp;amp;lt;&amp;amp;quot; &amp;amp;quot;;
-        cur=cur-&amp;amp;gt;next;
+        cout &lt;&lt; cur-&gt;data &lt;&lt; &quot; &quot;;
+        cur=cur-&gt;next;
     }
-    cout&amp;amp;lt;&amp;amp;lt;endl;
+    cout &lt;&lt; endl;
     return head;
 }
+</code></pre>
 
-````
+<p>递归方案很简单，如果当前函数参数所指向的节点是尾节点，则打印之。否则先打印它的下一个节点即可。</p>
 
-**递归方案很简单，如果当前函数参数所指向的节点是尾节点，则打印之。否则先打印它的下一个节点即可。**
+<h3>代码如下</h3>
 
-### 代码如下
-
-````
-void PrintListInReversedOrder(list* head)
+<pre><code class="language-c">void PrintListInReversedOrder(list* head)
 {
     if(head==NULL)
         return;
-    PrintListInReversedOrder(head-&amp;amp;gt;next);
-    cout&amp;amp;lt;&amp;amp;lt;head-&amp;amp;gt;data&amp;amp;lt;&amp;amp;lt;&amp;amp;quot; &amp;amp;quot;;
+    PrintListInReversedOrder(head-&gt;next);
+    cout &lt;&lt; head-&gt;data &lt;&lt; &quot; &quot;;
 }
-````
+</code></pre>
 
-**但如果链表太长，采用递归的话可能会导致Stack OverFlow，所以更好的办法是用循环来控制。而递归在本质上就是一个栈结构（系统栈），所以我们可以用自定义的栈（数据结构栈）来模拟递归的行为以实现这种效果。**
+<p>但如果链表太长，采用递归的话可能会导致 Stack OverFlow，所以更好的办法是用循环来控制。而递归在本质上就是一个栈结构（系统栈），所以我们可以用自定义的栈（数据结构栈）来模拟递归的行为以实现这种效果</p>
 
-### 代码如下
+<h3>代码如下</h3>
 
-````
-#include&amp;amp;lt;stack&amp;amp;gt;
-void PrintListInReversedOrder(list* head)
-{                                                                 //此处不用判断head是否为空，并非忘记
-    stack&amp;amp;lt;list*&amp;amp;gt; s;
+<pre><code>#include&lt;stack&gt;
+void PrintListInReversedOrder(list* head){
+//此处不用判断head是否为空，并非忘记
+    stack&lt;list*&gt; s;
     list* cur=head;
     while(cur!=NULL)
     {
         s.push(cur);
-        cur=cur-&amp;amp;gt;next;
+        cur=cur-&gt;next;
     }
     while(!s.empty())
     {
-        cout&amp;amp;lt;&amp;amp;lt;s.top()-&amp;amp;gt;data&amp;amp;lt;&amp;amp;lt;&amp;amp;quot; &amp;amp;quot;;
+        cout &lt;&lt; s.top()-&gt;data &lt;&lt; &quot; &quot;;
         s.pop();
     }
 }

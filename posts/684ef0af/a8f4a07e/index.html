@@ -39,16 +39,13 @@
         <div class="inner">
             <h2>面试题11：数值的整数次方</h2>
 
-<h3>题目：请实现函数double Power(double base, int exponent)，求base的exponent次方。不得使用库函数，同时不需要考虑大数问题。</h3>
-
-<hr />
+<p><strong>题目：请实现函数double Power(double base, int exponent)，求base的exponent次方。不得使用库函数，同时不需要考虑大数问题。</strong></p>
 
 <h3>分析</h3>
 
 <p>恩，很简单。我们写出的代码如下：</p>
 
-<pre><code>
-double Power(double base,int exponent)
+<pre><code class="language-C">double Power(double base,int exponent)
 {
 	double res=1;
 	int i;
@@ -60,16 +57,15 @@ double Power(double base,int exponent)
 }
 </code></pre>
 
-<p>说实话，我第一次做这道题的时候就是这么写的。但现在看来，还是too young too naive了。这道题虽然不难，但需要考虑的细节还是蛮多的，得全面考虑，否则就会出现程序崩溃或计算错误。</p>
+<p>说实话，我第一次做这道题的时候就是这么写的。但现在看来，还是 too young too naive 了。这道题虽然不难，但需要考虑的细节还是蛮多的，得全面考虑，否则就会出现程序崩溃或计算错误。</p>
 
-<p>比如base为0怎么处理？分别为正数或负数有怎么处理？exponent小于0，大于0小于1，大于1等情况都需要考虑在内。</p>
+<p>比如 base 为 0 怎么处理？分别为正数或负数有怎么处理？exponent 小于 0，大于 0 小于 1，大于 1 等情况都需要考虑在内。</p>
 
 <p>明白了这些，我们在代码里做好防范就好了。</p>
 
 <p>代码如下：</p>
 
-<pre><code>
-class DevidedByZero{};
+<pre><code class="language-C">class DevidedByZero{};
 
 double Power(double base,int exponent) throw (DevidedByZero)
 {
@@ -95,8 +91,6 @@ double Power(double base,int exponent) throw (DevidedByZero)
     return result;
 }
 </code></pre>
-
-<p><strong>以上</strong></p>
 
 <p>如果你有任何想法或是可以改进的地方，欢迎和我交流！</p>
 

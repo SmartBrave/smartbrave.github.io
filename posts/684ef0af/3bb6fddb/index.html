@@ -39,12 +39,11 @@
         <div class="inner">
             <h2>面试题19：二叉树的镜像</h2>
 
-<h3>题目：请完成一个函数，输入一个二叉树，输出它的镜像。</h3>
+<p><strong>题目：请完成一个函数，输入一个二叉树，输出它的镜像。</strong></p>
 
 <p>二叉树的节点定义如下：</p>
 
-<pre><code>
-struct BinaryTreeNode{
+<pre><code class="language-C">struct BinaryTreeNode{
     int value;
     BinaryTreeNode* left;
     BinaryTreeNode* right;
@@ -53,16 +52,13 @@ struct BinaryTreeNode{
 };
 </code></pre>
 
-<hr />
-
 <h3>分析</h3>
 
 <p>首先要弄明白什么是二叉树的镜像？镜像就是将二叉树的所有节点的左右指针交换后得到的二叉树。</p>
 
 <p>所以很容易分析出，要得到二叉树的镜像，需要交换它每个节点的左右指针。我们依次遍历该二叉树的每一个节点，交换它的左右指针，然后再交换它的左右子树即可。因此可用递归来做：</p>
 
-<pre><code>
-void MirrorRecursively(BinaryTreeNode* root)
+<pre><code class="language-C">void MirrorRecursively(BinaryTreeNode* root)
 {
     if(root==NULL)
         return;
@@ -71,8 +67,6 @@ void MirrorRecursively(BinaryTreeNode* root)
     MirrorRecursively(root-&gt;right);
 }
 </code></pre>
-
-<p><strong>以上</strong></p>
 
 <p>如果你有任何想法或是可以改进的地方，欢迎和我交流！</p>
 

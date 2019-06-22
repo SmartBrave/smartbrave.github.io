@@ -39,9 +39,9 @@
         <div class="inner">
             <h2>面试题18：树的子结构</h2>
 
-<h3>题目：输入两颗二叉树A和B，判断B是不是A的子结构。二叉树的节点定义如下：</h3>
+<p><strong>题目：输入两颗二叉树A和B，判断B是不是A的子结构。二叉树的节点定义如下：</strong></p>
 
-<pre><code>struct BinaryTreeNode{
+<pre><code class="language-C">struct BinaryTreeNode{
     int value;
     BinaryTreeNode* left;
     BinaryTreeNode* right;
@@ -50,16 +50,13 @@
 };
 </code></pre>
 
-<hr />
-
 <h3>分析</h3>
 
-<p>要判断B是不是A的子结构，也就是要判断B是不是 A的子树。我们可以先遍历A，如果某一个S节点的value和B树的根节点相同，就判断S和B的左右子树是否相等，如果相等，B就是A的子结构；否则跳过S继续建立A，直到遍历完成。</p>
+<p>要判断 B 是不是 A 的子结构，也就是要判断 B 是不是 A 的子树。我们可以先遍历 A，如果某一个 S 节点的 value 和 B 树的根节点相同，就判断 S 和 B 的左右子树是否相等，如果相等，B 就是 A 的子结构；否则跳过 S 继续建立 A，直到遍历完成。</p>
 
 <p>代码如下：</p>
 
-<pre><code>
-bool HasSubTree(BinaryTreeNode* root1,BinaryTreeNode* root2)
+<pre><code class="language-C">bool HasSubTree(BinaryTreeNode* root1,BinaryTreeNode* root2)
 {
     if(root1==NULL)
     {
@@ -102,8 +99,6 @@ bool HasSubTree(BinaryTreeNode* root1,BinaryTreeNode* root2)
     }
 }
 </code></pre>
-
-<p><strong>以上</strong></p>
 
 <p>如果你有任何想法或是可以改进的地方，欢迎和我交流！</p>
 

@@ -58,13 +58,13 @@
 
 <p>代码如下：</p>
 
-<pre><code>void _FindPath(BinaryTreeNode* root,int sum,vector&lt;int&gt;&amp;amp; v,int cursum)
+<pre><code>void _FindPath(BinaryTreeNode* root,int sum,vector&lt;int&gt;&amp; v,int cursum)
 {
     if(root==NULL)
         return;
     cursum+=root-&gt;value;
     v.push_back(root-&gt;value);
-    if(cursum==sum &amp;amp;&amp;amp; root-&gt;left==NULL &amp;amp;&amp;amp; root-&gt;right==NULL)
+    if(cursum==sum &amp;&amp; root-&gt;left==NULL &amp;&amp; root-&gt;right==NULL)
     {
         vector&lt;int&gt;::iterator iter=v.begin();
         for(;iter!=v.end();++iter)
