@@ -8,7 +8,7 @@
         <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Atom feed">
         <link rel="shortcut icon" href="/image/Yc.jpg">
         <link href="/css/prism.css" rel="stylesheet" />
-        <title>about</title>
+        <title>一个简单的Deque实现</title>
         <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-78070816-3"></script>
         <script>
@@ -37,59 +37,81 @@
         </script>
         <script src="/js/prism.js"></script>
         <div class="inner">
-            <h2>about</h2>
+            <h2>一个简单的Deque实现</h2>
 
-<h2>关于我</h2>
+<p>一个双向队列,底层使用 list 实现，因为 list 在 push_back，push_front，pop_back，pop_front 这些函数中效率较高。</p>
 
-<p>初入茅庐的毛头小伙，在努力探索编程的真谛和宇宙的起源，95 后大叔。<br/>
-vim 党，不接受 Emacser 和 Otherer 的不服。<br/>招聘女朋友，但不接受<code>有女朋友er</code>的敌视目光。<br/>
-以下列出的编程知识都懂一点，但都不深入,暂时还在扩展广度，逐渐扩展深度。</p>
+<pre><code class="language-C">#ifndef _DEQUE_
+#define _DEQUE_
 
-<h2>编程知识栈</h2>
+#include&lt;iostream&gt;
+#include&quot;../List/MyList.h&quot;
 
-<ul>
-<li>Golang | Shell | C/C++ | Python</li>
-<li>H.264 | RTMP | FFmpeg</li>
-<li>Linux | OS | TCP&amp;IP | HTTP</li>
-<li>基本数据结构 | 算法</li>
-<li>区块链 | BlockChain</li>
-<li>MySQL | Redis | Nginx</li>
-<li>Git | Docker | Markdown | Latex</li>
-</ul>
+template&lt;typename T&gt;
+class Deque{
+public:
+    Deque():mylist()
+    {}
 
-<h2>最近在学</h2>
+    Deque(const Deque&lt;T&gt;&amp; dq)
+    {
+        this-&gt;mylist=dq.mylist;
+    }
 
-<ul>
-<li>直播技术栈</li>
-</ul>
+    Deque&amp; operator=(const Deque&lt;T&gt;&amp; dq)
+    {
+        this-&gt;mylist=dq.mylist;
+    }
 
-<h2>最近在读的书</h2>
+    ~Deque()
+    {}
 
-<ul>
-<li>《数学之美》</li>
-<li>《Redis 设计与实现》</li>
-<li>《计算机网络》</li>
-<li>《现代操作系统》</li>
-<li>《性能之巅》</li>
-</ul>
+    size_t size()
+    {
+        return mylist.size();
+    }
 
-<h2>爱好</h2>
+    bool empty()
+    {
+        return mylist.empty();
+    }
 
-<ul>
-<li>心灵旅行</li>
-<li>肉体旅行</li>
-<li>黑暗料理</li>
-<li>王者农药</li>
-</ul>
+    const T&amp; front()
+    {
+        return mylist.begin()-&gt;data;
+    }
 
-<h2>联系我</h2>
+    void push_back(const T&amp; t)
+    {
+        mylist.push_back(t);
+    }
 
-<ul>
-<li>邮箱: SmartBraveCoder@gmail.com</li>
-<li>Github: <a href="https://github.com/smartbrave/">SmartBrave</a></li>
-<li>知乎: <a href="https://zhuanlan.zhihu.com/sbrave">编程那些事儿</a></li>
-<li>公众号: <a href="/image/WeChatPublishPlatformQRcode.jpg">GopherDeveloper</a>（很久未写，谨慎关注！）</li>
-</ul>
+    void push_front(const T&amp; t)
+    {
+        mylist.push_front(t);
+    }
+
+    void pop_back()
+    {
+        mylist.pop_back();
+    }
+
+    void pop_front()
+    {
+        mylist.pop_front();
+    }
+
+private:
+    List&lt;T&gt; mylist;
+};
+
+#endif
+</code></pre>
+
+<p>如果你有任何想法或是可以改进的地方，欢迎和我交流！</p>
+
+<p>完整代码及测试用例在 github 上：<a href="https://github.com/SmartBrave/DataStruct/tree/master/Deque">点我前往</a>
+)</p>
 
         </div>
     </body>
