@@ -111,20 +111,7 @@ func update(){
 
 <p>我们实现了两级缓存：本地进程内缓存和 redis 缓存。redis 缓存的目的是多台机器共享，一个 liveid 由一个进程请求一次就可以了。本地缓存则会设定一个过期时间，配合 LFU 算法避免内存无限增长。流程图如下：</p>
 
-<pre><code class="language-flow">st=&gt;start: 开始
-localexist=&gt;condition: 是否命中本地缓存?
-redisexist=&gt;condition: 是否命中 redis 缓存?
-setredis=&gt;operation: 存储到 redis
-setlocal=&gt;operation: 存储到本地缓存
-httpget=&gt;operation: 请求下游服务
-e=&gt;end: 结束
-
-st-&gt;localexist
-localexist(no,right)-&gt;redisexist
-localexist(yes)-&gt;e
-redisexist(no,right)-&gt;httpget(right)-&gt;setredis-&gt;setlocal(left)-&gt;e
-redisexist(yes)-&gt;setlocal
-</code></pre>
+<p><img src="/image/59d7b3a8-x.png" alt="" /></p>
 
 <h4>5. GC</h4>
 
@@ -230,12 +217,14 @@ func GetSlice() (slice []Buffer, putFunc func(giveUpSlice []Buffer))
 </tr>
 
 <tr>
-<td align="left">服务响应时间 99 分位</td>
+<td align="left">服务响应时间 99 分位</td>
 <td align="left">100ms</td>
 <td align="left">25ms</td>
 </tr>
 </tbody>
 </table>
+
+<p>可以看出，不管是从底层的 GC 的触发次数，还是业务层的接口响应时间，都有较大幅度的提升。</p>
 
         </div>
     </body>
