@@ -39,9 +39,9 @@
         <div class="inner">
             <h2>图像高斯模糊算法简介</h2>
 
-<p>图片缩放服务承载了映客及二十余个创新业务的图片处理功能。一种常见的业务需求就是对图像进行模糊处理。</p>
+<p>我司的图片编解码服务承载了整个集团二十余个业务的图片处理功能。一种常见的业务需求就是对图像进行模糊处理。</p>
 
-<p>近期，部分业务有对图像进行模糊处理的需求，因此大概搜索了解了一下图像的模糊处理算法，记录如下。</p>
+<p>近期，部分业务有对图像进行模糊处理的需求，因此大概学习了一下图像的模糊处理算法，记录如下。</p>
 
 <p>我们知道，一幅图片由多个像素点组成。对图片进行模糊处理，本质上是对这些像素点找到一种「平滑」的算法，使得每个像素都被周围的像素平均化，从而损失一部分的精度。与此相反的是对图片做锐化处理，在此不做展开。</p>
 
@@ -58,7 +58,7 @@ $$
 <p>由于图像是二维数据，因此我们需要二维的高斯函数，其形式为：
 $$
 \begin{align}
-G(x,y)&amp;=\frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{x^2}{2\sigma^2}} \cdot \frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{y^2}{2\sigma^2}}\
+G(x,y)&amp;=\frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{x^2}{2\sigma^2}} \cdot \frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{y^2}{2\sigma^2}}\\
 &amp;=\frac{1}{2\pi\sigma^2}e^{-\frac{(x^2+y^2)}{2\sigma^2}}
 \end{align}
 $$
@@ -81,6 +81,8 @@ $$
 <p><img src="/image/MTU3Nzc5NTM1MjM5OTczMzcyMyM0NjUjaW1hZ2U=.png" width="50%"></p>
 
 <p>给定 radius=5,sigma=10 得到的模糊图片如下：</p>
+
+<p><img src="/image/MTU3Nzc5NTM1MjM5OTczMzcyMyM0NjUjaW1hZ2U=&c=0&h=427&m=1&s=60&t=4&w=640&blur=1&radius=5&sigma=10.png" width="50%"></p>
 
         </div>
     </body>

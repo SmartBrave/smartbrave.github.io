@@ -55,7 +55,7 @@
 
 <p>在 RGB 色彩模式下，一幅图像可以看成由很多个像素点组成的二维矩阵，其中每个像素点的颜色均由 red、green、blue 三原色以不同强度叠加而成。例如，一个红色像素是由一个强度最大的红色及强度为 0 的绿色和蓝色组成。</p>
 
-<p><img src="/image/image_3d_matrix_rgb.png" alt="" /></p>
+<p><img src="/image/image_3d_matrix_rgb.png" width=100% height=100%></p>
 
 <p>一般而言，三个颜色分量均由 8bit 的数值表示，称为位深。因此每个像素占用空间大小为 $8\times3=24bit$。一段帧率是 15fps，分辨率是 480x240，时长一小时的视频占用空间将达到 $8\times3\times480\times240\times15\times3600=17.38G$。</p>
 
@@ -63,7 +63,7 @@
 
 <p>研究表明，相比于颜色，人眼对亮度变化更为敏感。请看以下左图，A 和 B 颜色是否相同，右图呢？</p>
 
-<p><img src="/image/luminance_vs_color.png" alt="" /></p>
+<p><img src="/image/luminance_vs_color.png" width=100% height=100%></p>
 
 <p>由于色度对主观感觉影响不大，因此可采用一种色彩空间，去除适当的色度冗余数据，达到压缩的目的。</p>
 
@@ -90,7 +90,7 @@ $$</p>
 
 <p>这种格式下，三个分量占一样的比重，也就是每个像素各采集一个Y、U、V分量。用叉表示 Y，用圆圈表示 UV，如图所示：</p>
 
-<p><img src="/image/yuv-444-format.jpeg" alt="" /></p>
+<p><img src="/image/yuv-444-format.jpeg" width=25% height=25%></p>
 
 <blockquote>
 <p>假如图像像素为：</p>
@@ -112,7 +112,7 @@ $$</p>
 
 <p>YUV 4:2:2 采样，意味着 UV 分量是 Y 分量采样的一半。如图所示：</p>
 
-<p><img src="/image/yuv-422-format.jpeg" alt="" /></p>
+<p><img src="/image/yuv-422-format.jpeg" width=25% height=25%></p>
 
 <blockquote>
 <p>假如图像像素为：</p>
@@ -134,7 +134,7 @@ $$</p>
 
 <p>该采样模式下，在每一行扫描时，只扫描一种色度分量（U 或者 V），和 Y 分量按照 2 : 1 的方式采样。比如，第一行扫描时，YU 按照 2 : 1 的方式采样，那么第二行扫描时，YV 分量按照 2:1 的方式采样。对于每个色度分量来说，它的水平方向和竖直方向的采样和 Y 分量相比都是 2:1。如图所示：</p>
 
-<p><img src="/image/yuv-420-format.jpeg" alt="" /></p>
+<p><img src="/image/yuv-420-format.jpeg" width=25% height=25%></p>
 
 <blockquote>
 <p>假设图像像素为：</p>
@@ -219,20 +219,20 @@ $$</p>
 
 <p>DCT 变换，是将 NxN 的样本 $X$ 变成 NxN 的系数矩阵 $Y$。变换过程为 $Y=AXA^T$。其中 $X$ 是样本矩阵，$Y$ 是系数矩阵，$A$ 是 NxN 的变换矩阵。$A$ 中各个元素如下:
 $$
-A<em>{ij}=C</em>icos\frac{(2j+1)i\pi}{2N}
+A_{ij}=C_icos\frac{(2j+1)i\pi}{2N}
 $$
 其中
 $$
-C<em>i=\sqrt{\frac{1}{N}}(i=0) \
-C</em>i=\sqrt{\frac{2}{N}}(i!=0)
+C_i=\sqrt{\frac{1}{N}}(i=0) \\
+C_i=\sqrt{\frac{2}{N}}(i!=0)
 $$
 下图给出一个实际8*8的图像块例子，图中的数字代表了每个像素的亮度值。从图上可以看出，在这个图像块中各个像素亮度值比较均匀，特别是相邻像素亮度值变化不是很大，说明图像信号具有很强的相关性。</p>
 
-<p><img src="/image/8x8orig.jpeg" alt="" /></p>
+<p><img src="/image/8x8orig.jpeg" width=40% height=40%></p>
 
 <p>下图是上图中图像块经过DCT变换后的结果。从图中可以看出经过DCT变换后，左上角的低频系数集中了大量能量，而右下角的高频系数上的能量很小。</p>
 
-<p><img src="/image/8x8dct.jpeg" alt="" /></p>
+<p><img src="/image/8x8DCT.jpeg" width=40% height=40%></p>
 
 <h4>量化</h4>
 
@@ -248,7 +248,7 @@ $$
 
 <p>DCT系数经过量化之后大部分经变为0，而只有很少一部分系数为非零值，此时只需将这些非0值进行压缩编码即可。首先需对量化器输出的交流系数进行 z 形扫描，如下图所示。目的是将二维矩阵变为一维，并将一维序列进行游程编码，从而达到压缩目的。</p>
 
-<p><img src="/image/lianghua.jpeg" alt="" /></p>
+<p><img src="/image/lianghua.jpeg" width=40% height=40%></p>
 
 <h3>五、H.264 码流结构</h3>
 
@@ -268,7 +268,7 @@ $$
 
 <p>在 VCL 数据传输或存储之前，这些编码的 VCL 数据，先被映射或封装进 NAL 单元(以下简称 NALU，Nal Unit) 中。每个 NALU 包括一个原始字节序列负荷(RBSP, Raw Byte Sequence Payload)、一组对应于视频编码的 NALU 头部信息。RBSP 的基本结构是:在原始编码数据的后面填加了结尾 比特。一个 bit“1”若干比特“0”，以便字节对齐。</p>
 
-<p><img src="/image/nalu.jpeg" alt="" /></p>
+<p><img src="/image/nalu.jpeg" width=100% height=100%></p>
 
 <p>每个 NALU 的前面，会有一个起始码，标识这是一个 NALU 的开始。其值为 00 00 01 或 00 00 00 01。</p>
 

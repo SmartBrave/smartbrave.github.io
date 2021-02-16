@@ -111,13 +111,13 @@ func update(){
 
 <p>我们实现了两级缓存：本地进程内缓存和 redis 缓存。redis 缓存的目的是多台机器共享，一个 liveid 由一个进程请求一次就可以了。本地缓存则会设定一个过期时间，配合 LFU 算法避免内存无限增长。流程图如下：</p>
 
-<p><img src="/image/59d7b3a8-x.png" alt="" /></p>
+<p><src="/image/59d7b3a8-x.png" width=100% height=100%></p>
 
 <h4>5. GC</h4>
 
 <p>为便于理解，这里先简要介绍下 golang 的垃圾回收过程：</p>
 
-<p><img src="/image/gogc.png" alt="" /></p>
+<p><src="/image/gogc.png" width=100% height=100%></p>
 
 <ol>
 <li>stop the world；</li>
@@ -191,7 +191,7 @@ func update(){
 <li><p>对字符串的拼接、修改等操作，会产生新的临时对象。因此可使用 <code>strings.Builder</code> 构建字符串；但标准库每次构建 <code>strings.Builder</code> 还是需要至少申请一次内存，因此结合 <code>sync.Pool</code> 进行了改写，源码参见：<a href="https://github.com/SmartBrave/utils/tree/master/pool">https://github.com/SmartBrave/utils/tree/master/pool</a>；</p></li>
 </ol>
 
-<pre><code class="language-go">package pool // import &quot;git.inke.cn/yangzhiyong/utils/pool&quot;
+<pre><code class="language-go">package pool // import &quot;github.com/SmartBrave/utils/pool&quot;
 func PutBuffer(giveUpBuf Buffer)
 type Buffer []byte
 func GetBuffer() (buf Buffer, putFunc func(giveUpStr Buffer))
@@ -217,7 +217,7 @@ func GetSlice() (slice []Buffer, putFunc func(giveUpSlice []Buffer))
 </tr>
 
 <tr>
-<td align="left">服务响应时间 99 分位</td>
+<td align="left">服务响应时间 99 分位</td>
 <td align="left">100ms</td>
 <td align="left">25ms</td>
 </tr>
@@ -225,6 +225,8 @@ func GetSlice() (slice []Buffer, putFunc func(giveUpSlice []Buffer))
 </table>
 
 <p>可以看出，不管是从底层的 GC 的触发次数，还是业务层的接口响应时间，都有较大幅度的提升。</p>
+
+<p>【完】</p>
 
         </div>
     </body>

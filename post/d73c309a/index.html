@@ -59,7 +59,7 @@
 <pre><code>$ docker images
 </code></pre>
 
-<p><img src="/image/49330702.png" alt="" /></p>
+<p><img src="/image/49330702.png" width=100% height=100%></p>
 
 <p>可以看到，输出共有五列，分别为 repository，tag，image ID，create 和 size。</p>
 
@@ -113,8 +113,7 @@ RUN npm install -g hexo-cl
 
 <p>每个免费账户可以创建一个 private 仓库和多个 public 仓库。可以利用 <code>docker push $iname</code> 将自己本地的镜像推送到远程仓库，也可以 <code>docker pull $iname</code> 去远端仓库拉取一个镜像。push 的前提是需要先通过 <code>docker login</code> 登录，pull 不用。</p>
 
-<p><code>docker search $key</code> 可以搜索远端仓库，<code>$key</code> 是关键字，包含该关键字的镜像都会被搜索出来，结果包含每个镜像的 index，name，description，starts，official，automated，分别表示该镜像的索引，名称，描述，点赞数，是否为官方的，是否自动化构建的。
-?是否自动化构建的。</p>
+<p><code>docker search $key</code> 可以搜索远端仓库，<code>$key</code> 是关键字，包含该关键字的镜像都会被搜索出来，结果包含每个镜像的 index，name，description，starts，official，automated，分别表示该镜像的索引，名称，描述，点赞数，是否为官方的，是否自动化构建的。</p>
 
         </div>
     </body>
