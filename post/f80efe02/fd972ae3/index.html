@@ -65,7 +65,7 @@
 
 <p>task_struct 中有一个条目 mm 指向 mm_struct，它描述了虚拟存储器的当前状态。我们感兴趣的两个字段是 pgd 和 mmap，其中 pgd 指向一级页表的基址，而 mmap 指向一个 vm_area_structs 的链表，其中每个 vm_area_structs 都描述了虚拟地址空间的一个区域，也就是我上文所说的「段」。示意图如下：</p>
 
-<p><img src="/image/fd972ae3-1.png" style="zoom: 200%;" /></p>
+<p><img src="/image/fd972ae3-1.png" width=100% height=100%></p>
 
 <p>由上图可知，vm_are_struct 结构体中各字段含义如下:</p>
 
