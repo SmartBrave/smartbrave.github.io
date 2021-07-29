@@ -1,43 +1,48 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=0.5">
 
-        <link href="/css/main.css" rel="stylesheet" type="text/css">
-        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Atom feed">
-        <link rel="shortcut icon" href="/image/Yc.jpg">
-        <link href="/css/prism.css" rel="stylesheet" />
-        <title>《C陷阱与缺陷》读书笔记</title>
-        <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-78070816-3"></script>
-        <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            
-            gtag('config', 'UA-78070816-3');
-        </script>
-    </head>
-    <body>
-        <!-- suppport block of mathjax -->
-        <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-        </script>
-        <!-- support mathjax inline -->
-        <script type="text/x-mathjax-config">
-            MathJax.Hub.Config({
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.5">
+
+    <link href="/css/main.css" rel="stylesheet" type="text/css">
+    <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Atom feed">
+    <link rel="shortcut icon" href="/image/Yc.jpg">
+    <link href="/css/prism.css" rel="stylesheet" />
+    <title>《C陷阱与缺陷》读书笔记</title>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-78070816-3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-78070816-3');
+    </script>
+</head>
+
+<body>
+    <!-- suppport block of mathjax -->
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- support mathjax inline -->
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
                 tex2jax: {inlineMath: [['$','$']]},
                 messageStyle: "none"
             });
         </script>
-        <script>
-            if (/mobile/i.test(navigator.userAgent) || /android/i.test(navigator.userAgent)){
-                document.body.classList.add('mobile');
-            }
-        </script>
-        <script src="/js/prism.js"></script>
-        <div class="inner">
-            <h2>《C陷阱与缺陷》读书笔记</h2>
+    <script>
+        if (/mobile/i.test(navigator.userAgent) || /android/i.test(navigator.userAgent)) {
+            document.body.classList.add('mobile');
+        }
+    </script>
+    <script src="/js/prism.js"></script>
+    <div class="inner">
+        <h2>《C陷阱与缺陷》读书笔记</h2>
 
 <ol>
 <li>在 C 语言中，符号中间的空白（包括空格符、制表符和换行符）将被忽略。</li>
@@ -60,7 +65,7 @@
 <li>悬挂 <code>else</code> 问题的解决方法：<code>else</code> 总是与同一括号内最近的未匹配的 <code>if</code> 结合。</li>
 <li>C 语言中只有一维数组，而且数组大小在编译时就作为一个常数确定下来。然而，数组元素可以是任何类型的对象，当然也可以是另外一个数组。</li>
 <li>对于一个数组，我们只能做两件事：确定数组大小，以及获得指向该数组下标为 0 元素的指针。其他对数组的一切操作，都是通过指针来进行的。换句话说，任何一个数组下标运算都等同于一个对应的指针运算。</li>
-<li>对于 <code>int ar[12][13]</code>，说明 <code>ar</code> 数组拥有 12 个数组类型的元素，其中每个元素都是拥有 13 个整型元素的数组（而不是反过来的）。因此，<code>sizeof(ar)</code> 的值是 <code>12\*13\*sizeof(int)</code>。</li>
+<li>对于 <code>int ar[12][13]</code>，说明 <code>ar</code> 数组拥有 12 个数组类型的元素，其中每个元素都是拥有 13 个整型元素的数组（而不是反过来的）。因此，<code>sizeof(ar)</code> 的值是 <code>12*13*sizeof(int)</code>。</li>
 <li>对于除 <code>sizeof</code> 之外的其他场合，<code>ar</code> 总被解释为指向数组起始元素的指针。</li>
 <li>对于 <code>int ar[12];</code>，<code>&amp;ar</code> 是一个指向数组的指针，而 <code>ar</code> 是指向数组首元素的指针。</li>
 <li><code>int *p;</code> 对指针的声明解释方式应该是 <code>*p</code> 是一个整型值，所以 <code>p</code> 就是一个指向整型元素的指针。</li>
@@ -125,10 +130,17 @@
 </ol></li>
 </ol>
 
-<p>【完】</p>
+    </div>
+</body>
 
-        </div>
-    </body>
+<footer>
+    <div class="footer">
+        Copyright © sbrave 2021
+        <br>
+        陕ICP备16005721号-1
+    </div>
+</footer>
+
 </html>
 
 <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/haoel/anti-baidu@0.6.2/js/anti-baidu-latest.min.js" charset="UTF-8"></script>

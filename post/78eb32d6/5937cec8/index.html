@@ -1,43 +1,48 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=0.5">
 
-        <link href="/css/main.css" rel="stylesheet" type="text/css">
-        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Atom feed">
-        <link rel="shortcut icon" href="/image/Yc.jpg">
-        <link href="/css/prism.css" rel="stylesheet" />
-        <title>golang程序启动流程</title>
-        <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-78070816-3"></script>
-        <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            
-            gtag('config', 'UA-78070816-3');
-        </script>
-    </head>
-    <body>
-        <!-- suppport block of mathjax -->
-        <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-        </script>
-        <!-- support mathjax inline -->
-        <script type="text/x-mathjax-config">
-            MathJax.Hub.Config({
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.5">
+
+    <link href="/css/main.css" rel="stylesheet" type="text/css">
+    <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Atom feed">
+    <link rel="shortcut icon" href="/image/Yc.jpg">
+    <link href="/css/prism.css" rel="stylesheet" />
+    <title>golang程序启动流程</title>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-78070816-3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-78070816-3');
+    </script>
+</head>
+
+<body>
+    <!-- suppport block of mathjax -->
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- support mathjax inline -->
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
                 tex2jax: {inlineMath: [['$','$']]},
                 messageStyle: "none"
             });
         </script>
-        <script>
-            if (/mobile/i.test(navigator.userAgent) || /android/i.test(navigator.userAgent)){
-                document.body.classList.add('mobile');
-            }
-        </script>
-        <script src="/js/prism.js"></script>
-        <div class="inner">
-            <h2>golang程序启动流程</h2>
+    <script>
+        if (/mobile/i.test(navigator.userAgent) || /android/i.test(navigator.userAgent)) {
+            document.body.classList.add('mobile');
+        }
+    </script>
+    <script src="/js/prism.js"></script>
+    <div class="inner">
+        <h2>golang程序启动流程</h2>
 
 <p>通常来说，程序执行的入口点都不是我们所写的 <code>main</code> 函数，编译器会在之前插入部分代码，用来执行相关的初始化工作。本文从整体流程上分析一下 Go 编译器在我们写的代码之前究竟做了什么。</p>
 
@@ -167,8 +172,17 @@ Breakpoint 4 at 0x42bb60: file /usr/local/go/src/runtime/proc1.go, line 674.
 
 <p>至此，程序启动前的工作就已经做完了。</p>
 
-        </div>
-    </body>
+    </div>
+</body>
+
+<footer>
+    <div class="footer">
+        Copyright © sbrave 2021
+        <br>
+        陕ICP备16005721号-1
+    </div>
+</footer>
+
 </html>
 
 <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/haoel/anti-baidu@0.6.2/js/anti-baidu-latest.min.js" charset="UTF-8"></script>
